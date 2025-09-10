@@ -8,18 +8,17 @@ namespace DAL
 {
     public class PatientDAO
     {
-
         private readonly string connectionString = ConfigurationManager.ConnectionStrings["PatientManagement"].ConnectionString;
 
-        public List<PatientDTO> GetPatients()
+        public List<PatientEntity> GetPatients()
         {
 
-            List<PatientDTO> patients = new List<PatientDTO>();
+            List<PatientEntity> patients = new List<PatientEntity>();
 
 
             using(SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = "SELEC * FROM Patient";
+                string query = "SELECT * FROM PatientDetails";
                 SqlCommand cmd = new SqlCommand(query, con);
 
                 con.Open();
@@ -27,9 +26,9 @@ namespace DAL
 
                 while(dr.Read())
                 {
-                    patients.Add(new PatientDTO
+                    patients.Add(new PatientEntity
                     {
-                        ID = (int)dr["Id"],
+                        ID = (int)dr["ID"],
                         Patient = dr["Patient"].ToString(),
                         Drug = dr["Drug"].ToString(),
                         Dosage = (decimal)dr["Dosage"],
