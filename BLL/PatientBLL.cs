@@ -12,7 +12,7 @@ namespace BLL
     {
         private readonly PatientDAO patientDAO = new PatientDAO();
 
-        public List<PatientDTO> GetPatients()
+        public List<PatientEntity> GetPatients()
         {
             return patientDAO.GetPatients();
         } 
