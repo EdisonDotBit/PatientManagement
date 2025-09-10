@@ -1,12 +1,13 @@
 ﻿using EL;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 
 namespace DAL
 {
-    public class PatientDAO
+    public class PatientDAL
     {
         private readonly string connectionString = ConfigurationManager.ConnectionStrings["PatientManagement"].ConnectionString;
 
@@ -16,7 +17,7 @@ namespace DAL
             List<PatientEntity> patients = new List<PatientEntity>();
 
 
-            using(SqlConnection con = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string query = "SELECT * FROM PatientDetails";
                 SqlCommand cmd = new SqlCommand(query, con);
@@ -24,7 +25,7 @@ namespace DAL
                 con.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
 
-                while(dr.Read())
+                while (dr.Read())
                 {
                     patients.Add(new PatientEntity
                     {
@@ -36,8 +37,8 @@ namespace DAL
                     });
                 }
             }
-
             return patients;
         }
+
     }
 }

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using UL;
 
 namespace PatientManagement.Controllers
 {
@@ -16,16 +15,10 @@ namespace PatientManagement.Controllers
         PatientBLL patientBLL = new PatientBLL();
 
         // GET: Patient
-        public ActionResult Index(string searchDate, string searchDosage, string searchDrug, string searchPatient)
+        public ActionResult Index()
         {
             List<PatientEntity> patientList = patientBLL.GetPatients();
-
-            // Filter patients using utility class
-            patientList = PatientFilterTable.FilterPatients(patientList, searchDate, searchDosage, searchDrug, searchPatient);
-
             return View(patientList);
-        }
-
-
+        }      
     }
 }

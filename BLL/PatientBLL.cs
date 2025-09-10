@@ -10,11 +10,11 @@ namespace BLL
 {
     public class PatientBLL
     {
-        private readonly PatientDAO patientDAO = new PatientDAO();
-
+        private readonly PatientDAL patientDAL = new PatientDAL();
+      
         public List<PatientEntity> GetPatients()
         {
-            return patientDAO.GetPatients();
-        } 
+            return patientDAL.GetPatients();
+        }
     }
 }
