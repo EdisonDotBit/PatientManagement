@@ -1,10 +1,11 @@
-﻿using System;
+﻿using BLL;
+using EL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using BLL;
-using EL;
+using UL;
 
 namespace PatientManagement.Controllers
 {
@@ -15,10 +16,16 @@ namespace PatientManagement.Controllers
         PatientBLL patientBLL = new PatientBLL();
 
         // GET: Patient
-        public ActionResult Index()
+        public ActionResult Index(string searchDate, string searchDosage, string searchDrug, string searchPatient)
         {
-            List<PatientDTO> patientlist = patientBLL.GetPatients();
-            return View();
+            List<PatientEntity> patientList = patientBLL.GetPatients();
+
+            // Filter patients using utility class
+            patientList = PatientFilterTable.FilterPatients(patientList, searchDate, searchDosage, searchDrug, searchPatient);
+
+            return View(patientList);
         }
+
+
     }
 }
