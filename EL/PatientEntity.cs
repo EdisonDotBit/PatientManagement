@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EL
 {
-    public class PatientDTO
+    public class PatientEntity
     {
         public int ID { get; set; }
         public decimal Dosage { get; set; }
