@@ -1,0 +1,90 @@
+﻿@model EL.PatientEntity
+@{
+    ViewBag.Title = "Edit Patient Record";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Edit Patient Record</h2>
+
+    @using (Html.BeginForm("", "", FormMethod.Post, new { id = "editForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.ID)
+        <div id="validationSummary" class="text-danger"></div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Patient)
+            @Html.TextBoxFor(m => m.Patient, new { @class = "form-control", placeholder = "Patient Name" })
+            <div class="error-placeholder small"></div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Drug)
+            @Html.TextBoxFor(m => m.Drug, new { @class = "form-control", placeholder = "Drug Name" })
+            <div class="error-placeholder small"></div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Dosage)
+            @Html.TextBoxFor(m => m.Dosage, new { @class = "form-control", placeholder = "Dosage" })
+            <div class="error-placeholder small"></div>
+        </div>
+
+        <div class="mt-2">
+            <button type="button" class="btn btn-primary" id="btnUpdate">Update</button>
+            <a href="@Url.Action("Index", "Patient")" class="btn btn-secondary">Cancel</a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#btnUpdate").click(function () {
+                $("#validationSummary").html("");
+
+                if ($("#editForm").valid()) {
+                    $.ajax({
+                        url: '@Url.Action("Edit", "Patient")',
+                        type: 'POST',
+                        data: $("#editForm").serialize(),
+                        success: function (response) {
+                            if (response.success) {
+                                alert(response.message);
+                                window.location.href = '@Url.Action("Index", "Patient")';
+                            } else {
+                                $("#validationSummary").html(response.message);
+                            }
+                        },
+                        error: function () {
+                            $("#validationSummary").html("An unexpected error occurred.");
+                        }
+                    });
+                }
+            });
+
+            $("#editForm").validate({
+                rules: {
+                    Patient: { required: true, maxlength: 50 },
+                    Drug: { required: true, maxlength: 50 },
+                    Dosage: { required: true, number: true, min: 0.01 }
+                },
+                messages: {
+                    Patient: { required: "Patient name is required.", maxlength: "Max 50 characters." },
+                    Drug: { required: "Drug name is required.", maxlength: "Max 50 characters." },
+                    Dosage: { required: "Dosage is required.", number: "Enter a valid number.", min: "Must be greater than 0." }
+                },
+                errorClass: "text-danger",
+                highlight: function (element) { $(element).addClass("is-invalid"); },
+                unhighlight: function (element) { $(element).removeClass("is-invalid"); },
+                errorPlacement: function (error, element) {
+                    element.siblings(".error-placeholder").html(error);
+                }
+            });
+        });
+    </script>
+}
