@@ -62,7 +62,7 @@ namespace PatientManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult Create(PatientEntity model)
+        public JsonResult Create(PatientEntity patientEntity)
         {
             if (!ModelState.IsValid)
             {
@@ -74,24 +74,24 @@ namespace PatientManagement.Controllers
                 return Json(new { success = false, message = string.Join("<br />", errors) });
             }
 
-            ResultEntity result = patientBLL.CreatePatient(model);
+            ResultEntity result = patientBLL.CreatePatient(patientEntity);
           
             return Json(new { success = result.Success, message = result.Message});
         }
 
         public ActionResult Edit(int ID)
         {
-            PatientEntity patient = patientBLL.GetPatients().FirstOrDefault(p => p.ID == ID);
-            if(patient == null)
+            PatientEntity patientEntity = patientBLL.GetPatients().FirstOrDefault(p => p.ID == ID);
+            if(patientEntity == null)
             {
                 return HttpNotFound();
             }
-            return View(patient);
+            return View(patientEntity);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(PatientEntity model)
+        public ActionResult Edit(PatientEntity patientEntity)
         {
             if (!ModelState.IsValid)
             {
@@ -103,8 +103,8 @@ namespace PatientManagement.Controllers
                 return Json(new { success = false, message = string.Join("<br />", errors) });
             }
 
-            ResultEntity result = patientBLL.EditPatient(model);
-            return Json(new { sucess = result.Success, message = result.Message });
+            ResultEntity result = patientBLL.EditPatient(patientEntity);
+            return Json(new { success = result.Success, message = result.Message });
         }
 
     }
