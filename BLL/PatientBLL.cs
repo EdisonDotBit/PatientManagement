@@ -17,21 +17,36 @@ namespace BLL
             return patientDAL.GetPatients();
         }
 
-        public ResultEntity CreatePatient(PatientEntity patient)
+        public ResultEntity CreatePatient(PatientEntity patientEntity)
         {
             // Set the date automatically
-            patient.ModifiedDate = DateTime.Now;
+            patientEntity.ModifiedDate = DateTime.Now;
 
             // Check for duplicate
-            if (patientDAL.IsDuplicate(patient))
+            if (patientDAL.IsDuplicate(patientEntity))
             {
                 return new ResultEntity { Success = false, Message = "Cannot add same drug to a patient on the same day." };
 
             }
 
             // If passed, insert into database
-            patientDAL.CreatePatient(patient);
+            patientDAL.CreatePatient(patientEntity);
             return new ResultEntity { Success = true, Message = "Record successfully saved."};
         }
+
+        public ResultEntity EditPatient(PatientEntity patientEntity)
+        {
+            patientEntity.ModifiedDate = DateTime.Now;
+
+            // Optional: Prevent duplicates on update (exclude current ID)
+            if (patientDAL.IsUpdateDuplicate(patientEntity))
+            {
+                return new ResultEntity { Success = false, Message = "Cannot update to a duplicate drug for this patient on the same day." };
+            }
+
+            patientDAL.EditPatient(patientEntity);
+            return new ResultEntity { Success = true, Message = "Record successfully updated." };
+        }
+
     }
 }
