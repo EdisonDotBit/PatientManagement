@@ -78,5 +78,34 @@ namespace PatientManagement.Controllers
           
             return Json(new { success = result.Success, message = result.Message});
         }
+
+        public ActionResult Edit(int ID)
+        {
+            PatientEntity patient = patientBLL.GetPatients().FirstOrDefault(p => p.ID == ID);
+            if(patient == null)
+            {
+                return HttpNotFound();
+            }
+            return View(patient);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(PatientEntity model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return Json(new { success = false, message = string.Join("<br />", errors) });
+            }
+
+            ResultEntity result = patientBLL.EditPatient(model);
+            return Json(new { sucess = result.Success, message = result.Message });
+        }
+
     }
 }
