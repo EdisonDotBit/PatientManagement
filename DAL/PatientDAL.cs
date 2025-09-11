@@ -40,7 +40,7 @@ namespace DAL
             return patients;
         }
 
-        public void CreatePatient(PatientEntity patient)
+        public void CreatePatient(PatientEntity patientEntity)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
             {
@@ -48,17 +48,17 @@ namespace DAL
                                  VALUES (@Patient, @Drug, @Dosage, @ModifiedDate)";
 
                 SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@Patient", patient.Patient);
-                cmd.Parameters.AddWithValue("@Drug", patient.Drug);
-                cmd.Parameters.AddWithValue("@Dosage", patient.Dosage);
-                cmd.Parameters.AddWithValue("@ModifiedDate", patient.ModifiedDate);
+                cmd.Parameters.AddWithValue("@Patient", patientEntity.Patient);
+                cmd.Parameters.AddWithValue("@Drug", patientEntity.Drug);
+                cmd.Parameters.AddWithValue("@Dosage", patientEntity.Dosage);
+                cmd.Parameters.AddWithValue("@ModifiedDate", patientEntity.ModifiedDate);
 
                 con.Open();
                 cmd.ExecuteNonQuery();
             }
         }
 
-        public bool IsDuplicate(PatientEntity patient)
+        public bool IsDuplicate(PatientEntity patientEntity)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
             {
@@ -66,9 +66,49 @@ namespace DAL
                                  WHERE Patient = @Patient AND Drug = @Drug AND CAST(ModifiedDate AS DATE) = CAST(@ModifiedDate AS DATE)";
 
                 SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@Patient", patient.Patient);
-                cmd.Parameters.AddWithValue("@Drug", patient.Drug);
-                cmd.Parameters.AddWithValue("@ModifiedDate", patient.ModifiedDate);
+                cmd.Parameters.AddWithValue("@Patient", patientEntity.Patient);
+                cmd.Parameters.AddWithValue("@Drug", patientEntity.Drug);
+                cmd.Parameters.AddWithValue("@ModifiedDate", patientEntity.ModifiedDate);
+
+                con.Open();
+                int count = (int)cmd.ExecuteScalar();
+                return count > 0;
+            }
+        }
+
+        public void EditPatient(PatientEntity patientEntity)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = @"UPDATE PatientDetails 
+                         SET Patient = @Patient, Drug = @Drug, Dosage = @Dosage, ModifiedDate = @ModifiedDate
+                         WHERE ID = @ID";
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@Patient", patientEntity.Patient);
+                cmd.Parameters.AddWithValue("@Drug", patientEntity.Drug);
+                cmd.Parameters.AddWithValue("@ModifiedDate", patientEntity.ModifiedDate);
+                cmd.Parameters.AddWithValue("@ID", patientEntity.ID);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public bool IsUpdateDuplicate(PatientEntity patientEntity)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = @"SELECT COUNT(*) FROM PatientDetails 
+                         WHERE Patient = @Patient AND Drug = @Drug 
+                         AND CAST(ModifiedDate AS DATE) = CAST(@ModifiedDate AS DATE)
+                         AND ID <> @ID";
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@Patient", patientEntity.Patient);
+                cmd.Parameters.AddWithValue("@Drug", patientEntity.Drug);
+                cmd.Parameters.AddWithValue("@ModifiedDate", patientEntity.ModifiedDate);
+                cmd.Parameters.AddWithValue("@ID", patientEntity.ModifiedDate);
 
                 con.Open();
                 int count = (int)cmd.ExecuteScalar();
