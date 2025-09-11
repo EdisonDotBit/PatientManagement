@@ -87,6 +87,7 @@ namespace DAL
                 SqlCommand cmd = new SqlCommand(query, con);
                 cmd.Parameters.AddWithValue("@Patient", patientEntity.Patient);
                 cmd.Parameters.AddWithValue("@Drug", patientEntity.Drug);
+                cmd.Parameters.AddWithValue("@Dosage", patientEntity.Dosage);
                 cmd.Parameters.AddWithValue("@ModifiedDate", patientEntity.ModifiedDate);
                 cmd.Parameters.AddWithValue("@ID", patientEntity.ID);
 
@@ -108,7 +109,7 @@ namespace DAL
                 cmd.Parameters.AddWithValue("@Patient", patientEntity.Patient);
                 cmd.Parameters.AddWithValue("@Drug", patientEntity.Drug);
                 cmd.Parameters.AddWithValue("@ModifiedDate", patientEntity.ModifiedDate);
-                cmd.Parameters.AddWithValue("@ID", patientEntity.ModifiedDate);
+                cmd.Parameters.AddWithValue("@ID", patientEntity.ID);
 
                 con.Open();
                 int count = (int)cmd.ExecuteScalar();
