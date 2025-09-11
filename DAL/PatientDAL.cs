@@ -40,5 +40,40 @@ namespace DAL
             return patients;
         }
 
+        public void CreatePatient(PatientEntity patient)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = @"INSERT INTO PatientDetails (Patient, Drug, Dosage, ModifiedDate)
+                                 VALUES (@Patient, @Drug, @Dosage, @ModifiedDate)";
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@Patient", patient.Patient);
+                cmd.Parameters.AddWithValue("@Drug", patient.Drug);
+                cmd.Parameters.AddWithValue("@Dosage", patient.Dosage);
+                cmd.Parameters.AddWithValue("@ModifiedDate", patient.ModifiedDate);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public bool IsDuplicate(PatientEntity patient)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = @"SELECT COUNT(*) FROM PatientDetails 
+                                 WHERE Patient = @Patient AND Drug = @Drug AND CAST(ModifiedDate AS DATE) = CAST(@ModifiedDate AS DATE)";
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@Patient", patient.Patient);
+                cmd.Parameters.AddWithValue("@Drug", patient.Drug);
+                cmd.Parameters.AddWithValue("@ModifiedDate", patient.ModifiedDate);
+
+                con.Open();
+                int count = (int)cmd.ExecuteScalar();
+                return count > 0;
+            }
+        }
     }
 }

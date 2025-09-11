@@ -9,7 +9,29 @@
     <h2 class="mb-3">Patient Details</h2>
 
     <!-- Create button -->
-    <a href="@Url.Action("Create", "Patient")" class="btn btn-primary mb-3">Create New Record</a>
+    <a href="@Url.Action("Create", "Patient")" class="btn btn-primary mb-3">Add New Record</a>
+
+    <!-- Search Filters -->
+    <div class="card mb-3 p-3">
+        <div class="row g-2">
+            <div class="col-md-3">
+                <input type="date" id="filterDate" class="form-control" placeholder="Search by Date" />
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="filterDosage" class="form-control" placeholder="Search by Dosage" />
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="filterDrug" class="form-control" placeholder="Search by Drug" />
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="filterPatient" class="form-control" placeholder="Search by Patient" />
+            </div>
+        </div>
+        <div class="mt-2">
+            <button id="btnSearch" class="btn btn-success">Search</button>
+            <button id="btnReset" class="btn btn-secondary">Reset</button>
+        </div>
+    </div>
 
     <!-- Table -->
     <table class="table table-bordered table-striped text-center" id="patientTable">
@@ -22,20 +44,24 @@
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="patientTableBody">
             @foreach (var item in Model)
             {
                 <tr>
                     <td>@item.ModifiedDate.ToString("MM/dd/yyyy")</td>
-                    <td>@item.Dosage</td>
+                    <td>@item.Dosage.ToString("0.00")</td>
                     <td>@item.Drug</td>
                     <td>@item.Patient</td>
                     <td>
                         <a href="@Url.Action("Edit", "Patient", new { id = item.ID })" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="@Url.Action("Delete", "Patient", new { id = item.ID })" class="btn btn-sm btn-danger">Delete</a>
+                        <a href="#" data-id="@item.ID" class="btn btn-sm btn-danger btn-delete">Delete</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+@section Scripts{
+    <script src="~/Scripts/PatientList.js"></script>
+}
