@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace PatientManagement.Controllers
@@ -26,7 +25,6 @@ namespace PatientManagement.Controllers
         public JsonResult Search(string Date, string Dosage, string Drug, string Patient)
         {
             var patients = patientBLL.GetPatients();
-
             // Filter by Date
             if (!string.IsNullOrEmpty(Date) && DateTime.TryParse(Date, out DateTime filterDate))
             {
@@ -104,6 +102,13 @@ namespace PatientManagement.Controllers
             }
 
             ResultEntity result = patientBLL.EditPatient(patientEntity);
+            return Json(new { success = result.Success, message = result.Message });
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int ID)  
+        {
+            ResultEntity result = patientBLL.DeletePatient(ID);
             return Json(new { success = result.Success, message = result.Message });
         }
 
