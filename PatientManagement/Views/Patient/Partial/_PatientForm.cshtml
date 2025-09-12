@@ -1,0 +1,24 @@
+﻿@model EL.PatientEntity
+
+@Html.AntiForgeryToken()
+@Html.HiddenFor(m => m.ID) <!-- ID will be ignored for Create -->
+
+<div id="validationSummary" class="text-danger"></div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Patient)
+    @Html.TextBoxFor(m => m.Patient, new { @class = "form-control", placeholder = "Patient Name" })
+    <div class="error-placeholder small"></div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Drug)
+    @Html.TextBoxFor(m => m.Drug, new { @class = "form-control", placeholder = "Drug Name" })
+    <div class="error-placeholder small"></div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Dosage)
+    @Html.TextBoxFor(m => m.Dosage, new { @class = "form-control", placeholder = "Dosage" })
+    <div class="error-placeholder small"></div>
+</div>

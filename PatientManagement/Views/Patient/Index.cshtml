@@ -9,7 +9,7 @@
     <h2 class="mb-3">Patient Details</h2>
 
     <!-- Create button -->
-    <a href="@Url.Action("Create", "Patient")" class="btn btn-primary mb-3">Add New Record</a>
+    <a href="@Url.Action("Create", "Patient")" class="btn btn-primary mb-3" title="Add Record">Add New Record</a>
 
     <!-- Search Filters -->
     <div class="card mb-3 p-3">
@@ -28,13 +28,13 @@
             </div>
         </div>
         <div class="mt-2">
-            <button id="btnSearch" class="btn btn-success">Search</button>
-            <button id="btnReset" class="btn btn-secondary">Reset</button>
+            <button id="btnSearch" class="btn btn-success" title="Search Result">Search</button>
+            <button id="btnReset" class="btn btn-secondary" title="Reset Filter">Reset</button>
         </div>
     </div>
 
     <!-- Table -->
-    <table class="table table-bordered table-striped text-center" id="patientTable">
+    <table class="table table-bordered table-striped text-center align-middle" id="patientTable">
         <thead>
             <tr>
                 <th>Date</th>
@@ -54,7 +54,7 @@
                     <td>@item.Patient</td>
                     <td>
                         <a href="@Url.Action("Edit", "Patient", new { ID = item.ID })" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="#" data-id="@item.ID" class="btn btn-sm btn-danger btn-delete">Delete</a>
+                        <button type="button" data-id="@item.ID" class="btn btn-sm btn-danger btn-delete">Delete</button>
                     </td>
                 </tr>
             }
@@ -63,5 +63,6 @@
 </div>
 
 @section Scripts{
+    <script src="https://cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
     <script src="~/Scripts/PatientList.js"></script>
 }
