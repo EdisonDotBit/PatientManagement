@@ -1,10 +1,9 @@
-﻿using System;
+﻿using DAL;
+using EL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EL;
-using DAL;
+using UL;
 
 namespace BLL
 {
@@ -19,34 +18,52 @@ namespace BLL
 
         public ResultEntity CreatePatient(PatientEntity patientEntity)
         {
-            // Set the date automatically
             patientEntity.ModifiedDate = DateTime.Now;
 
-            // Check for duplicate
             if (patientDAL.IsDuplicate(patientEntity))
             {
-                return new ResultEntity { Success = false, Message = "Cannot add same drug to a patient on the same day." };
+                return new ResultEntity { Success = false, Message = ResultUtil.Duplicate};
 
             }
 
-            // If passed, insert into database
             patientDAL.CreatePatient(patientEntity);
-            return new ResultEntity { Success = true, Message = "Record successfully saved."};
+            return new ResultEntity { Success = true, Message = ResultUtil.Saved};
         }
 
         public ResultEntity EditPatient(PatientEntity patientEntity)
         {
             patientEntity.ModifiedDate = DateTime.Now;
 
-            // Optional: Prevent duplicates on update (exclude current ID)
+            var existingPatient = patientDAL.GetPatients().FirstOrDefault(p => p.ID == patientEntity.ID);
+            if (existingPatient == null)
+                return new ResultEntity { Success = false, Message = ResultUtil.NotFound };
+
             if (patientDAL.IsUpdateDuplicate(patientEntity))
             {
-                return new ResultEntity { Success = false, Message = "Cannot update to a duplicate drug for this patient on the same day." };
+                return new ResultEntity { Success = false, Message = ResultUtil.UpdateDuplicate};
+            }
+
+            if (existingPatient.Patient == patientEntity.Patient &&
+                existingPatient.Drug == patientEntity.Drug &&
+                existingPatient.Dosage == patientEntity.Dosage)
+            {
+                return new ResultEntity { Success = false, Message = ResultUtil.NoChanges };
             }
 
             patientDAL.EditPatient(patientEntity);
-            return new ResultEntity { Success = true, Message = "Record successfully updated." };
+            return new ResultEntity { Success = true, Message = ResultUtil.Updated };
         }
 
+        public ResultEntity DeletePatient(int ID)
+        {
+            try
+            {
+                patientDAL.DeletePatient(ID);
+                return new ResultEntity { Success = true, Message = ResultUtil.Deleted };
+            } catch (Exception ex)
+            {
+                return new ResultEntity { Success = false, Message = ResultUtil.DeleteError(ex.Message)};
+            }
+        }
     }
 }
