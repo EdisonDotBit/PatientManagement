@@ -115,7 +115,7 @@ Solution: PatientManagement
        Dosage DECIMAL(7,4) NOT NULL,
        Drug VARCHAR(50) NOT NULL,
        Patient VARCHAR(50) NOT NULL,
-       ModifiedDate DATETIME NOT NULL DEFAULT GETDATE()
+       ModifiedDate DATETIME NOT NULL
    );
    ```
 
@@ -192,10 +192,3 @@ Solution: PatientManagement
 3. Commit changes (`git commit -m 'Added new feature'`)  
 4. Push branch (`git push origin feature/my-feature`)  
 5. Open Pull Request  
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.  
-See [LICENSE](LICENSE) for details.  
