@@ -116,5 +116,18 @@ namespace DAL
                 return count > 0;
             }
         }
+
+        public void DeletePatient(int ID)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString)) 
+            {
+                string query = "DELETE FROM PatientDetails WHERE ID = @ID";
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@ID", ID);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }
