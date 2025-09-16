@@ -10,10 +10,9 @@ namespace PatientManagement.Controllers
 {
     public class PatientController : Controller
     {
-
         // Initialize object to use call BLL methods in the controller
         PatientBLL patientBLL = new PatientBLL();
-
+        PatientValidateBLL patientValidateBLL = new PatientValidateBLL();
         // GET: Patient
         public ActionResult Index()
         {
@@ -60,6 +59,21 @@ namespace PatientManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public JsonResult CheckDuplicate(PatientEntity patientEntity)
+        {
+            ResultEntity result = patientValidateBLL.IsDuplicate(patientEntity);
+            if (!result.Success)
+            {
+                return Json(new { isDuplicate = true, message = result.Message });
+            }
+            else
+            {
+                return Json(new { isDuplicate = false, message = result.Message });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public JsonResult Create(PatientEntity patientEntity)
         {
             if (!ModelState.IsValid)
@@ -68,12 +82,9 @@ namespace PatientManagement.Controllers
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage)
                     .ToList();
-
                 return Json(new { success = false, message = string.Join("<br />", errors) });
             }
-
             ResultEntity result = patientBLL.CreatePatient(patientEntity);
-          
             return Json(new { success = result.Success, message = result.Message});
         }
 
@@ -82,9 +93,32 @@ namespace PatientManagement.Controllers
             PatientEntity patientEntity = patientBLL.GetPatients().FirstOrDefault(p => p.ID == ID);
             if(patientEntity == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("RouteNotFound", "Home");
             }
             return View(patientEntity);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult CheckHasChanges(PatientEntity patientEntity)
+        {
+            var result = patientValidateBLL.HasChanges(patientEntity);
+            return Json(new { success = result.Success, message = result.Message });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult CheckUpdateDuplicate(PatientEntity patientEntity)
+        {
+            ResultEntity result = patientValidateBLL.IsUpdateDuplicate(patientEntity);
+            if (!result.Success)
+            {
+                return Json(new { isDuplicate = true, message = result.Message });
+            }
+            else
+            {
+                return Json(new { isDuplicate = false, message = result.Message });
+            }
         }
 
         [HttpPost]
@@ -97,10 +131,8 @@ namespace PatientManagement.Controllers
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage)
                     .ToList();
-
                 return Json(new { success = false, message = string.Join("<br />", errors) });
             }
-
             ResultEntity result = patientBLL.EditPatient(patientEntity);
             return Json(new { success = result.Success, message = result.Message });
         }
@@ -111,6 +143,5 @@ namespace PatientManagement.Controllers
             ResultEntity result = patientBLL.DeletePatient(ID);
             return Json(new { success = result.Success, message = result.Message });
         }
-
     }
 }
