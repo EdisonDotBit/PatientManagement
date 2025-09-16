@@ -1,7 +1,8 @@
 ﻿@model EL.PatientEntity
 
 @Html.AntiForgeryToken()
-@Html.HiddenFor(m => m.ID) <!-- ID will be ignored for Create -->
+@Html.HiddenFor(m => m.ID)
+@Html.HiddenFor(m => m.ModifiedDate)
 
 <div id="validationSummary" class="text-danger"></div>
 
@@ -19,6 +20,14 @@
 
 <div class="form-group">
     @Html.LabelFor(m => m.Dosage)
-    @Html.TextBoxFor(m => m.Dosage, new { @class = "form-control", placeholder = "Dosage" })
+    @Html.TextBoxFor(m => m.Dosage, new
+    {
+        @class = "form-control",
+    placeholder = "Dosage",
+    type = "number",
+    min = "0.0001",
+    max = "9999.9999",
+    step = "0.0001" 
+})
     <div class="error-placeholder small"></div>
 </div>

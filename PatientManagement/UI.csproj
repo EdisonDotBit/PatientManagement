@@ -184,6 +184,8 @@
     <Content Include="Views\Patient\Create.cshtml" />
     <Content Include="Views\Patient\Edit.cshtml" />
     <Content Include="Views\Patient\Partial\_PatientForm.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\RouteNotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -226,10 +228,6 @@
     <ProjectReference Include="..\EL\EL.csproj">
       <Project>{db5b8f18-5850-4f4e-956a-4b19b51613f0}</Project>
       <Name>EL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UL\UL.csproj">
-      <Project>{f9fb192c-06d8-4801-a8a7-cf4ce0a3ddc9}</Project>
-      <Name>UL</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

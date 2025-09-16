@@ -23,6 +23,8 @@
     <script src="~/Scripts/jquery-3.7.0.min.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
     <script>
+        var checkHasChangesUrl = '@Url.Action("CheckHasChanges", "Patient")';
+        var checkUpdateDuplicateUrl = '@Url.Action("CheckUpdateDuplicate", "Patient")';
         var editPatientUrl = '@Url.Action("Edit", "Patient")';
         var indexPatientUrl = '@Url.Action("Index", "Patient")';
     </script>
