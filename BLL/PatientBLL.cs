@@ -2,7 +2,6 @@
 using EL;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UL;
 
 namespace BLL
@@ -18,40 +17,45 @@ namespace BLL
 
         public ResultEntity CreatePatient(PatientEntity patientEntity)
         {
-            patientEntity.ModifiedDate = DateTime.Now;
-
-            if (patientDAL.IsDuplicate(patientEntity))
+            try
             {
-                return new ResultEntity { Success = false, Message = ResultUtil.Duplicate};
+                patientEntity.ModifiedDate = DateTime.Now;
 
-            }
-
-            patientDAL.CreatePatient(patientEntity);
-            return new ResultEntity { Success = true, Message = ResultUtil.Saved};
+                bool created = patientDAL.CreatePatient(patientEntity);
+                
+                if(created)
+                {
+                    return new ResultEntity { Success = true, Message = ResultUtil.Saved };
+                } else
+                {
+                    return new ResultEntity { Success = false, Message = ResultUtil.UnexpectedError };
+                }
+               
+            } catch (Exception ex) 
+            {
+                return new ResultEntity { Success = false, Message = ResultUtil.CreateError(ex.Message) };
+            }  
         }
 
         public ResultEntity EditPatient(PatientEntity patientEntity)
         {
-            patientEntity.ModifiedDate = DateTime.Now;
-
-            var existingPatient = patientDAL.GetPatients().FirstOrDefault(p => p.ID == patientEntity.ID);
-            if (existingPatient == null)
-                return new ResultEntity { Success = false, Message = ResultUtil.NotFound };
-
-            if (patientDAL.IsUpdateDuplicate(patientEntity))
+           try
             {
-                return new ResultEntity { Success = false, Message = ResultUtil.UpdateDuplicate};
-            }
+                patientEntity.ModifiedDate = DateTime.Now;
+                bool updated = patientDAL.EditPatient(patientEntity);
+                
+                if(updated)
+                {
+                    return new ResultEntity { Success = true, Message = ResultUtil.Updated };
+                } else
+                {
+                    return new ResultEntity { Success = false, Message = ResultUtil.UnexpectedError };
+                }
 
-            if (existingPatient.Patient == patientEntity.Patient &&
-                existingPatient.Drug == patientEntity.Drug &&
-                existingPatient.Dosage == patientEntity.Dosage)
+            } catch (Exception ex)
             {
-                return new ResultEntity { Success = false, Message = ResultUtil.NoChanges };
+                return new ResultEntity { Success = false, Message = ResultUtil.UpdateError(ex.Message) };
             }
-
-            patientDAL.EditPatient(patientEntity);
-            return new ResultEntity { Success = true, Message = ResultUtil.Updated };
         }
 
         public ResultEntity DeletePatient(int ID)
