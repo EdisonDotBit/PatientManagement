@@ -1,4 +1,14 @@
 ﻿$(document).ready(function () {
+    // Custom validation methods
+    $.validator.addMethod("alphaName", function (value, element) {
+        return this.optional(element) || /^[A-Za-z](?:[A-Za-z\s'-]*[A-Za-z'-])?$/.test(value);
+    });
+    $.validator.addMethod("alphanumericName", function (value, element) {
+        return this.optional(element) || /^[A-Za-z0-9](?:[A-Za-z0-9\s]*[A-Za-z0-9])?$/.test(value);
+    });
+    $.validator.addMethod("decimal4", function (value, element) {
+        return this.optional(element) || /^\d+(\.\d{1,4})?$/.test(value);
+    }, "Up to 4 decimal places only.");
     // Form Validation Setup
     $("#editForm").validate({
         rules: {
@@ -16,15 +26,10 @@
         unhighlight: function (element) { $(element).removeClass("is-invalid"); },
         errorPlacement: function (error, element) { element.siblings(".error-placeholder").html(error); }
     });
-    $.validator.addMethod("alphaName", function (value, element) {
-        return this.optional(element) || /^[A-Za-z](?:[A-Za-z\s'-]*[A-Za-z'-])?$/.test(value);
+    // Clear summary on input
+    $("#Drug").on("input", function () {
+        $("#validationSummary").html("");
     });
-    $.validator.addMethod("alphanumericName", function (value, element) {
-        return this.optional(element) || /^[A-Za-z0-9](?:[A-Za-z0-9\s]*[A-Za-z0-9])?$/.test(value);
-    });
-    $.validator.addMethod("decimal4", function (value, element) {
-        return this.optional(element) || /^\d+(\.\d{1,4})?$/.test(value);
-    }, "Up to 4 decimal places only.");
     // UPDATE Button
     $("#btnUpdate").click(function () {
         if (!$("#editForm").valid()) return;
