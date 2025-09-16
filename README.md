@@ -112,7 +112,7 @@ Solution: PatientManagement
 
    CREATE TABLE PatientDetails (
        ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-       Dosage DECIMAL(7,4) NOT NULL,
+       Dosage DECIMAL(8,4) NOT NULL,
        Drug VARCHAR(50) NOT NULL,
        Patient VARCHAR(50) NOT NULL,
        ModifiedDate DATETIME NOT NULL
@@ -144,7 +144,7 @@ Solution: PatientManagement
 | Column       | Type           | Constraints / Rules                               |
 |--------------|----------------|--------------------------------------------------|
 | ID           | int            | Primary Key, Identity, Not Null                  |
-| Dosage       | decimal(7,4)   | Required, >0, stored with 4 decimals, shown as 2 |
+| Dosage       | decimal(8,4)   | Required, >0, stored with 4 decimals, shown as 2 |
 | Drug         | varchar(50)    | Required, unique per patient per day             |
 | Patient      | varchar(50)    | Required, no blank-only inputs                   |
 | ModifiedDate | datetime       | Required, defaults to current timestamp          |
