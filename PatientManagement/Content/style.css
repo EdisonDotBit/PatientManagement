@@ -28,3 +28,17 @@
     margin-bottom: 2px;
 }
 
+#patientTable tbody tr {
+    cursor: pointer
+}
+
+    #patientTable tbody tr.table-active,
+    #patientTable tbody tr.table-active td {
+        background-color: rgb(153 201 255) !important; /* gold */
+        color: #000 !important;
+    }
+
+#patientTable tbody tr:hover {
+     background-color: inherit !important;
+     cursor: pointer;
+}
