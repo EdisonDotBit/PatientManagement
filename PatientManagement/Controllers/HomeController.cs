@@ -13,5 +13,16 @@ namespace PatientManagement.Controllers
         {
             return View();
         }
+
+        public ActionResult About()
+        {
+            return View();
+        }
+
+        public ActionResult RouteNotFound()
+        {
+            return View();
+        }
+
     }
 }
