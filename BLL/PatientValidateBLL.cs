@@ -10,7 +10,6 @@ namespace BLL
     {
         private readonly PatientValidateDAL patientValidateDAL = new PatientValidateDAL();
         private readonly PatientDAL patientDAL = new PatientDAL();
-
         public ResultEntity IsDuplicate(PatientEntity patientEntity)
         {
             try
@@ -36,7 +35,6 @@ namespace BLL
                 return new ResultEntity { Success = false, Message = ResultUtil.DuplicateError(ex.Message) };
             }
         }
-
         public ResultEntity IsUpdateDuplicate(PatientEntity patientEntity)
         {
             try
@@ -56,7 +54,6 @@ namespace BLL
                 return new ResultEntity { Success = false, Message = ResultUtil.DuplicateError(ex.Message) };
             }
         }
-
         public ResultEntity HasChanges(PatientEntity patientEntity)
         {
             try
