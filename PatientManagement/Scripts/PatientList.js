@@ -1,21 +1,19 @@
 ﻿$(document).ready(function () {
     var table = $('#patientTable').DataTable({
-        paging: true, info: true, searching: false, ordering: true,
-        columnDefs: [{ "orderable": false, "targets": 4 }],
-        createdRow: function (row) {
-            $(row).find('td').addClass('text-center align-middle');
-        }
+        paging: true,
+        info: true,
+        searching: false,
+        ordering: true,
+        columnDefs: [
+            { orderable: false, targets: 4 },
+            { className: "text-center align-middle", targets: "_all" }
+        ]
     });
-
-    $('#patientTable thead th').addClass('text-center align-middle');
-
-
     $('.dt-length').css({
         'display': 'flex',
         'align-items': 'center',
         'gap': '8px'
     });
-
     // Parse MVC JSON date
     function parseMvcDate(dateStr) {
         if (!dateStr) return '';
@@ -26,7 +24,7 @@
             ("0" + date.getDate()).slice(-2) + '/' +
             date.getFullYear();
     }
-
+    // Refresh table
     function refreshTable(data) {
         table.clear();
         $.each(data, function (i, item) {
@@ -43,8 +41,6 @@
 
         $('[title]').tooltip({ trigger: 'hover' });
     }
-
-
     // SEARCH
     $('#btnSearch').click(function () {
         var filters = {
@@ -61,18 +57,14 @@
             error: function () { Swal.fire('Error', 'Error loading data.', 'error'); }
         });
     });
-
     $('#btnReset').click(function () {
         $('#filterDate, #filterDosage, #filterDrug, #filterPatient').val('');
         $('#btnSearch').click();
     });
-
     $('#btnSearch').click();
-
-    // DELETE with SweetAlert2 confirmation
+    // DELETE with confirmation
     $(document).on('click', '.btn-delete', function () {
         var id = $(this).data('id');
-
         Swal.fire({
             title: 'Are you sure?',
             text: "Do you want to delete this record?",
@@ -96,7 +88,9 @@
                                 text: response.message,
                                 timer: 1500,
                                 showConfirmButton: false
-                            }).then(() => { $('#btnSearch').click(); });
+                            }).then(() => {
+                                window.location.reload();
+                            });
                         } else {
                             Swal.fire('Error', response.message, 'error');
                         }
@@ -105,5 +99,11 @@
                 });
             }
         });
+    });
+    // Row click highlight
+    $('#patientTable tbody').on('click', 'tr', function (e) {
+        if ($(e.target).closest('a, button').length > 0) return; 
+        $('#patientTable tbody tr').removeClass('table-active'); 
+        $(this).addClass('table-active'); 
     });
 });
