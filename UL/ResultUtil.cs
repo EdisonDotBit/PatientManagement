@@ -13,13 +13,15 @@ namespace UL
         public static string Updated => "Record successfully updated.";
         public static string Deleted => "Record successfully deleted.";
         public static string HasChanges = "Changes detected. Ready to update.";
+        public static string NoDuplicateFound => "No duplicate found.";
 
         // Error messages
         public static string NotFound => "Record not found.";
-        public static string NoChanges => "No changes detected.";
-        public static string Duplicate => "Cannot add same drug to a patient on the same day.";
-        public static string NoDuplicateFound => "No duplicate found.";
-        public static string UpdateDuplicate => "Cannot update to a duplicate drug for this patient on the same day.";
+        public static string NoChanges => "No changes detected.";   
+        public static string ExactDuplicate => "Record already exists.";
+        public static string DrugDuplicate => "Cannot add same drug to a patient on the same day.";
+        public static string UpdateDrugDuplicate => "Cannot update to the same drug for this patient on the same day.";
+
 
         // Exception messages
         public static string DeleteError(string ex) => $"Error deleting record: {ex}";
