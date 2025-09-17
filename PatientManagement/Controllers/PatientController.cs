@@ -61,15 +61,8 @@ namespace PatientManagement.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult CheckDuplicate(PatientEntity patientEntity)
         {
-            ResultEntity result = patientValidateBLL.IsDuplicate(patientEntity);
-            if (!result.Success)
-            {
-                return Json(new { isDuplicate = true, message = result.Message });
-            }
-            else
-            {
-                return Json(new { isDuplicate = false, message = result.Message });
-            }
+            ResultEntity result = patientValidateBLL.IsAddDuplicate(patientEntity);
+            return Json(new { isDuplicate = !result.Success, message = result.Message });
         }
 
         [HttpPost]
@@ -91,7 +84,7 @@ namespace PatientManagement.Controllers
         public ActionResult Edit(int ID)
         {
             PatientEntity patientEntity = patientBLL.GetPatients().FirstOrDefault(p => p.ID == ID);
-            if(patientEntity == null)
+            if (patientEntity == null)
             {
                 return RedirectToAction("RouteNotFound", "Home");
             }
@@ -111,14 +104,7 @@ namespace PatientManagement.Controllers
         public JsonResult CheckUpdateDuplicate(PatientEntity patientEntity)
         {
             ResultEntity result = patientValidateBLL.IsUpdateDuplicate(patientEntity);
-            if (!result.Success)
-            {
-                return Json(new { isDuplicate = true, message = result.Message });
-            }
-            else
-            {
-                return Json(new { isDuplicate = false, message = result.Message });
-            }
+            return Json(new { isDuplicate = !result.Success, message = result.Message });
         }
 
         [HttpPost]
