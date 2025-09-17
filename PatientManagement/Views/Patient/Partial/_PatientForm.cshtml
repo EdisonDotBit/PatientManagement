@@ -2,7 +2,6 @@
 
 @Html.AntiForgeryToken()
 @Html.HiddenFor(m => m.ID)
-@Html.HiddenFor(m => m.ModifiedDate)
 
 <div id="validationSummary" class="text-danger"></div>
 
@@ -22,7 +21,7 @@
     @Html.LabelFor(m => m.Dosage)
     @Html.TextBoxFor(m => m.Dosage, new
     {
-        @class = "form-control",
+    @class = "form-control",
     placeholder = "Dosage",
     type = "number",
     min = "0.0001",
