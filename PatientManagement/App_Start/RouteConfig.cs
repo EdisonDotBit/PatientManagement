@@ -25,7 +25,6 @@ namespace PatientManagement
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
 
-           
             routes.MapRoute(
                 name: "NotFound",
                 url: "{*url}",
