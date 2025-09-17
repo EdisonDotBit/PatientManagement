@@ -12,7 +12,15 @@ namespace BLL
 
         public List<PatientEntity> GetPatients()
         {
-            return patientDAL.GetPatients();
+            try
+            {
+                return patientDAL.GetPatients();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ResultUtil.GetError(ex.Message));
+                return new List<PatientEntity>();
+            }
         }
 
         public ResultEntity CreatePatient(PatientEntity patientEntity)
@@ -42,8 +50,8 @@ namespace BLL
            try
             {
                 patientEntity.ModifiedDate = DateTime.Now;
+
                 bool updated = patientDAL.EditPatient(patientEntity);
-                
                 if(updated)
                 {
                     return new ResultEntity { Success = true, Message = ResultUtil.Updated };
