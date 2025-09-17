@@ -10,25 +10,19 @@ namespace BLL
     {
         private readonly PatientValidateDAL patientValidateDAL = new PatientValidateDAL();
         private readonly PatientDAL patientDAL = new PatientDAL();
-        public ResultEntity IsDuplicate(PatientEntity patientEntity)
+        public ResultEntity IsAddDuplicate(PatientEntity patientEntity)
         {
             try
             {
-                if (patientEntity.ModifiedDate == default)
-                {
-                    patientEntity.ModifiedDate = DateTime.Now;
-                }
+                patientEntity.ModifiedDate = DateTime.Now;
 
-                bool isDuplicate = patientValidateDAL.IsDuplicate(patientEntity);
+                if (patientValidateDAL.IsAddExactDuplicate(patientEntity))
+                    return new ResultEntity { Success = false, Message = ResultUtil.ExactDuplicate };
 
-                if (isDuplicate)
-                {
-                    return new ResultEntity { Success = false, Message = ResultUtil.Duplicate };
-                }
-                else
-                {
-                    return new ResultEntity { Success = true, Message = ResultUtil.NoDuplicateFound };
-                }
+                if (patientValidateDAL.IsAddDrugDuplicate(patientEntity))
+                    return new ResultEntity { Success = false, Message = ResultUtil.DrugDuplicate };
+
+                return new ResultEntity { Success = true, Message = ResultUtil.NoDuplicateFound };
             }
             catch (Exception ex)
             {
@@ -39,15 +33,15 @@ namespace BLL
         {
             try
             {
-                bool isUpdateDuplicate = patientValidateDAL.IsUpdateDuplicate(patientEntity);
+                patientEntity.ModifiedDate = DateTime.Now;
 
-                if (isUpdateDuplicate)
-                {
-                    return new ResultEntity { Success = false, Message = ResultUtil.UpdateDuplicate };
-                } else
-                {
-                    return new ResultEntity { Success = true, Message = ResultUtil.NoDuplicateFound };
-                }       
+                if (patientValidateDAL.IsUpdateExactDuplicate(patientEntity))
+                    return new ResultEntity { Success = false, Message = ResultUtil.ExactDuplicate };
+
+                if (patientValidateDAL.IsUpdateDrugDuplicate(patientEntity))
+                    return new ResultEntity { Success = false, Message = ResultUtil.UpdateDrugDuplicate };
+
+                return new ResultEntity { Success = true, Message = ResultUtil.NoDuplicateFound };
             }
             catch (Exception ex)
             {
@@ -58,6 +52,7 @@ namespace BLL
         {
             try
             {
+                patientEntity.ModifiedDate = DateTime.Now;
                 var existingPatient = patientDAL.GetPatients().FirstOrDefault(p => p.ID == patientEntity.ID);
 
                 if (existingPatient == null)
