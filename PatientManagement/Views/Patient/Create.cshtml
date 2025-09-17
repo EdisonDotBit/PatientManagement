@@ -11,7 +11,7 @@
     {
         @Html.Partial("Partial/_PatientForm", Model)
 
-        <div class="mt-2"> 
+        <div class="mt-2">
             <button type="button" class="btn btn-primary" id="btnSave" title="Save Record">Save</button>
             <button type="button" class="btn btn-warning" id="btnClear" title="Clear Inputs">Clear All</button>
             <a href="@Url.Action("Index", "Patient")" class="btn btn-secondary" title="Cancel Process">Cancel</a>
@@ -27,5 +27,5 @@
         var createPatientUrl = '@Url.Action("Create", "Patient")';
         var indexPatientUrl = '@Url.Action("Index", "Patient")';
     </script>
-    <script src="~/Scripts/PatientValidateCreateForm.js"></script>
+    <script src="~/Content/JS/PatientValidateCreateForm.js"></script>
 }
