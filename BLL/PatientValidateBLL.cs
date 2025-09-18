@@ -2,6 +2,7 @@
 using EL;
 using System;
 using System.Linq;
+using System.Data.SqlClient;
 using UL;
 
 namespace BLL
@@ -17,16 +18,16 @@ namespace BLL
                 patientEntity.ModifiedDate = DateTime.Now;
 
                 if (patientValidateDAL.IsAddExactDuplicate(patientEntity))
-                    return new ResultEntity { Success = false, Message = ResultUtil.ExactDuplicate };
+                    return new ResultEntity { IsValid = false, Message = ResultUtil.ExactDuplicate };
 
                 if (patientValidateDAL.IsAddDrugDuplicate(patientEntity))
-                    return new ResultEntity { Success = false, Message = ResultUtil.DrugDuplicate };
+                    return new ResultEntity { IsValid = false, Message = ResultUtil.DrugDuplicate };
 
-                return new ResultEntity { Success = true, Message = ResultUtil.NoDuplicateFound };
+                return new ResultEntity { IsValid = true, Message = ResultUtil.NoDuplicateFound };
             }
             catch (Exception ex)
             {
-                return new ResultEntity { Success = false, Message = ResultUtil.DuplicateError(ex.Message) };
+                return new ResultEntity { IsValid = false, Message = ResultUtil.DuplicateError(ex.Message) };
             }
         }
         public ResultEntity IsUpdateDuplicate(PatientEntity patientEntity)
@@ -36,24 +37,23 @@ namespace BLL
                 patientEntity.ModifiedDate = DateTime.Now;
 
                 if (patientValidateDAL.IsUpdateExactDuplicate(patientEntity))
-                    return new ResultEntity { Success = false, Message = ResultUtil.ExactDuplicate };
+                    return new ResultEntity { IsValid = false, Message = ResultUtil.ExactDuplicate };
 
                 if (patientValidateDAL.IsUpdateDrugDuplicate(patientEntity))
-                    return new ResultEntity { Success = false, Message = ResultUtil.UpdateDrugDuplicate };
+                    return new ResultEntity { IsValid = false, Message = ResultUtil.UpdateDrugDuplicate };
 
-                return new ResultEntity { Success = true, Message = ResultUtil.NoDuplicateFound };
+                return new ResultEntity { IsValid = true, Message = ResultUtil.NoDuplicateFound };
             }
             catch (Exception ex)
             {
-                return new ResultEntity { Success = false, Message = ResultUtil.DuplicateError(ex.Message) };
+                return new ResultEntity { IsValid = false, Message = ResultUtil.DuplicateError(ex.Message) };
             }
         }
         public ResultEntity HasChanges(PatientEntity patientEntity)
         {
             try
             {
-                patientEntity.ModifiedDate = DateTime.Now;
-                var existingPatient = patientDAL.GetPatients().FirstOrDefault(p => p.ID == patientEntity.ID);
+                var existingPatient = patientValidateDAL.GetPatientByID(patientEntity.ID);
 
                 if (existingPatient == null)
                 {
