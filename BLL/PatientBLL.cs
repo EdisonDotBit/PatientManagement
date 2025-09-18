@@ -2,6 +2,7 @@
 using EL;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using UL;
 
 namespace BLL
@@ -15,14 +16,13 @@ namespace BLL
             try
             {
                 return patientDAL.GetPatients();
-            }
+            }  
             catch (Exception ex)
             {
                 Console.WriteLine(ResultUtil.GetError(ex.Message));
                 return new List<PatientEntity>();
             }
         }
-
         public ResultEntity CreatePatient(PatientEntity patientEntity)
         {
             try
@@ -38,13 +38,16 @@ namespace BLL
                 {
                     return new ResultEntity { Success = false, Message = ResultUtil.UnexpectedError };
                 }
-               
-            } catch (Exception ex) 
+            }
+            catch (SqlException ex)
+            {
+                return new ResultEntity { Success = false, Message = ex.Message };
+            }
+            catch (Exception ex) 
             {
                 return new ResultEntity { Success = false, Message = ResultUtil.CreateError(ex.Message) };
             }  
         }
-
         public ResultEntity EditPatient(PatientEntity patientEntity)
         {
            try
@@ -59,20 +62,28 @@ namespace BLL
                 {
                     return new ResultEntity { Success = false, Message = ResultUtil.UnexpectedError };
                 }
-
-            } catch (Exception ex)
+            }
+            catch (SqlException ex)
+            {
+                return new ResultEntity { Success = false, Message = ex.Message };
+            }
+            catch (Exception ex)
             {
                 return new ResultEntity { Success = false, Message = ResultUtil.UpdateError(ex.Message) };
             }
         }
-
         public ResultEntity DeletePatient(int ID)
         {
             try
             {
                 patientDAL.DeletePatient(ID);
                 return new ResultEntity { Success = true, Message = ResultUtil.Deleted };
-            } catch (Exception ex)
+            }
+            catch (SqlException ex)
+            {
+                return new ResultEntity { Success = false, Message = ex.Message };
+            }
+            catch (Exception ex)
             {
                 return new ResultEntity { Success = false, Message = ResultUtil.DeleteError(ex.Message)};
             }
