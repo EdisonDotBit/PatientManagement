@@ -23,32 +23,7 @@ namespace PatientManagement.Controllers
         [HttpGet]
         public JsonResult Search(string Date, string Dosage, string Drug, string Patient)
         {
-            var patients = patientBLL.GetPatients();
-            // Filter by Date
-            if (!string.IsNullOrEmpty(Date) && DateTime.TryParse(Date, out DateTime filterDate))
-            {
-                patients = patients.Where(p => p.ModifiedDate.Date == filterDate.Date).ToList();
-            }
-
-            // Filter by Dosage
-            if (!string.IsNullOrEmpty(Dosage) && decimal.TryParse(Dosage, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal filterDosage))
-            {
-                patients = patients.Where(p => p.Dosage == filterDosage).ToList();
-            }
-
-            // Filter by Drug
-            if (!string.IsNullOrEmpty(Drug))
-            {
-                patients = patients.Where(p => p.Drug.IndexOf(Drug, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
-            }
-
-            // Filter by Patient
-            if (!string.IsNullOrEmpty(Patient))
-            {
-                patients = patients.Where(p => p.Patient.IndexOf(Patient, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
-            }
-
-            // Return JSON
+            var patients = patientBLL.SearchPatients(Date, Dosage, Drug, Patient);
             return Json(patients, JsonRequestBehavior.AllowGet);
         }
 
