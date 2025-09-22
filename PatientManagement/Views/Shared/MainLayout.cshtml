@@ -1,64 +1,95 @@
-﻿@* Views/Shared/_Layout.cshtml *@
+﻿@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title - Patient Management</title>
+
+    <!-- Bootstrap & DataTables CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css" rel="stylesheet" />
+
+    <!-- Plugins -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Custom CSS -->
     <link href="~/Content/CSS/style.css" rel="stylesheet" />
 </head>
-<body class="bg-light d-flex flex-column min-vh-100">
+<body class="bg-light">
 
-    <!-- Header / Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="@Url.Action("Index", "Home")">Patient Management</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "Patient")">Patients</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("About", "Home")">About Us</a>
-                    </li>
-                </ul>
+    <div class="d-flex vh-100">
+
+        <!-- Sidebar -->
+        <nav class="d-flex flex-column flex-shrink-0 p-3 bg-primary text-white" style="width: 220px;">
+            <a href="@Url.Action("Index", "Home")" class="d-flex align-items-center mb-3 text-white text-decoration-none">
+                <img src="~/Content/Images/logo.png" alt="Logo" style="width: 50px; height: auto; margin-right: 8px;" />
+                <span class="fs-5 fw-bold">Patient Management</span>
+            </a>
+
+            <hr class="text-white" />
+
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item mb-1">
+                    <a href="@Url.Action("Index", "Home")"
+                       class="nav-link rounded @(currentController == "Home" && currentAction == "Index" ? "bg-light text-dark fw-bold" : "text-white")">
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item mb-1">
+                    <a href="@Url.Action("Index", "Patient")"
+                       class="nav-link rounded @(currentController == "Patient" ? "bg-light text-dark fw-bold" : "text-white")">
+                        Patients
+                    </a>
+                </li>
+            </ul>
+
+            <div class="mt-auto pt-3 border-top text-center">
+                <a href="@Url.Action("Index", "About")"
+                   class="nav-link rounded @(currentController == "About" ? "bg-light text-dark fw-bold" : "text-white")">
+                    About Us
+                </a>
             </div>
+        </nav>
+
+        <!-- Main content + footer -->
+        <div class="d-flex flex-column flex-grow-1 overflow-hidden">
+
+            <!-- Page content -->
+            <main class="flex-grow-1 overflow-auto p-4">
+                @RenderBody()
+            </main>
+
+            <!-- Footer -->
+            <footer class="bg-white text-black border-top text-center py-2 flex-shrink-0">
+                <div class="container">
+                    <p class="mb-0">&copy; @DateTime.Now.Year - Patient Management System</p>
+                </div>
+            </footer>
+
         </div>
-    </nav>
 
-    <!-- Main Content -->
-    <main role="main" class="container my-4 flex-grow-1">
-        @RenderBody()
-    </main>
+    </div>
 
-    <!-- Footer -->
-    <footer class="bg-primary text-white text-center py-2 mt-auto">
-        <div class="container">
-            <p class="mb-0">&copy; @DateTime.Now.Year - Patient Management System</p>
-        </div>
-    </footer>
-
+    <!-- Scripts -->
     <script src="~/Scripts/jquery-3.7.0.min.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title], [data-bs-toggle="tooltip"]'))
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title], [data-bs-toggle="tooltip"]'));
             tooltipTriggerList.map(function (el) {
-                return new bootstrap.Tooltip(el)
+                return new bootstrap.Tooltip(el);
             });
         });
     </script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

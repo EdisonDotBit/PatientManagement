@@ -1,57 +1,42 @@
-﻿
-@{
-    ViewBag.Title = "Index";
+﻿@{
+    ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/MainLayout.cshtml";
 }
 
-@{
-    ViewBag.Title = "Home";
-    Layout = "~/Views/Shared/MainLayout.cshtml";
-}
+<div class="container mt-4">
+    <div class="row g-4">
+        <h2 class="mb-3">Dashboard</h2>
+        <div class="col-md-6">
+            <div class="card shadow-sm dashboard-card">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">Daily Patient Records</h5>
+                    <div class="chart-container flex-grow-1">
+                        <canvas id="dailyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div class="container text-center py-5">
-
-    <!-- Welcome Header -->
-    <div class="mb-5">
-        <h1 class="display-4 fw-bold text-primary">Welcome to Patient Management System</h1>
-        <p class="lead text-muted">A simple ASP.NET MVC application with N-Layer Architecture</p>
+        <div class="col-md-6">
+            <div class="card shadow-sm dashboard-card">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">Drug Distribution</h5>
+                    <div class="chart-container flex-grow-1">
+                        <canvas id="drugChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- Feature Cards -->
-    <div class="row justify-content-center g-4">
-
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title text-success">📊 Records Overview</h5>
-                    <p class="card-text">Quickly check daily dosage records and track medication history.</p>
-                    <a href="@Url.Action("Index", "Patient")" class="btn btn-outline-success">View Records</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title text-danger">⚙️ System Info</h5>
-                    <p class="card-text">Built with ASP.NET MVC, SQL Server, Bootstrap, and N-Layer architecture.</p>
-                    <a href="@Url.Action("About", "Home")" class="btn btn-outline-danger">Learn More</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title text-dark">🌐 GitHub Repository</h5>
-                    <p class="card-text">Explore the full project source code, contribute, or report issues on GitHub.</p>
-                    <a href="https://github.com/EdisonDotBit/PatientManagement" target="_blank" class="btn btn-outline-dark">
-                        Visit GitHub
-                    </a>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
 </div>
+
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script>
+        var dailyRecords = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.DailyRecords));
+        var drugDistribution = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.DrugDistribution));
+    </script>
+    <script src="~/Content/JS/DashboardChart.js"></script>
+}
