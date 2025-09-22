@@ -42,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DailyRecordEntity.cs" />
+    <Compile Include="DrugDistributionEntity.cs" />
     <Compile Include="PatientEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultEntity.cs" />

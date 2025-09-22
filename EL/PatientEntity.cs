@@ -23,9 +23,10 @@ namespace EL
         public string Drug { get; set; }
 
         [Required(ErrorMessage = "Dosage is required.")]
-        [Range(0.0001, 9999.9999, ErrorMessage = "Dosage must be greater than 0.")]
+        [Range(0.0001, 999.9999, ErrorMessage = "Dosage must be between 0.0001 and 999.9999.")]
         [RegularExpression(@"^\d+(\.\d{1,4})?$", ErrorMessage = "Dosage can have up to 4 decimal places only.")]
         public decimal Dosage { get; set; }
+
         public DateTime ModifiedDate { get; set; }
     }
 }
