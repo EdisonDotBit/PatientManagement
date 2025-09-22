@@ -35,6 +35,39 @@ namespace DAL
             }
             return patients;
         }
+        public List<PatientEntity> SearchPatients(string date, string dosage, string drug, string patient)
+        {
+            List<PatientEntity> patients = new List<PatientEntity>();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("spSearchPatients", con))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@Date", string.IsNullOrWhiteSpace(date) ? (object)DBNull.Value : DateTime.Parse(date));
+                    cmd.Parameters.AddWithValue("@Dosage", string.IsNullOrWhiteSpace(dosage) ? (object)DBNull.Value : decimal.Parse(dosage));
+                    cmd.Parameters.AddWithValue("@Drug", string.IsNullOrWhiteSpace(drug) ? (object)DBNull.Value : drug);
+                    cmd.Parameters.AddWithValue("@Patient", string.IsNullOrWhiteSpace(patient) ? (object)DBNull.Value : patient);
+
+                    con.Open();
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            patients.Add(new PatientEntity
+                            {
+                                ID = (int)dr["ID"],
+                                Patient = dr["Patient"].ToString(),
+                                Drug = dr["Drug"].ToString(),
+                                Dosage = (decimal)dr["Dosage"],
+                                ModifiedDate = (DateTime)dr["ModifiedDate"]
+                            });
+                        }
+                    }
+                }
+            }
+            return patients;
+        }
         public bool CreatePatient(PatientEntity patientEntity)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
