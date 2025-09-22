@@ -120,8 +120,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -145,9 +146,12 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\CSS\style.css" />
-    <Content Include="Content\Images\404_NotFound.jpg" />
+    <Content Include="Content\Images\404_NotFoundLogo.jpg" />
+    <Content Include="Content\Images\logo.png" />
+    <Content Include="Content\JS\DashboardChart.js" />
     <Content Include="Content\JS\PatientDelete.js" />
     <Content Include="Content\JS\PatientSearch.js" />
+    <Content Include="Content\JS\Shared\Utils.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -181,20 +185,18 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\MainLayout.cshtml" />
+    <Content Include="Views\Home\RouteNotFound.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Patient\Index.cshtml" />
     <Content Include="Views\Patient\Create.cshtml" />
     <Content Include="Views\Patient\Edit.cshtml" />
+    <Content Include="Views\Patient\Index.cshtml" />
     <Content Include="Views\Patient\Partial\_PatientForm.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\RouteNotFound.cshtml" />
+    <Content Include="Views\Shared\MainLayout.cshtml" />
+    <Content Include="Views\About\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Based\" />
-    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
