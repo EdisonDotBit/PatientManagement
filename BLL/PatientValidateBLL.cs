@@ -18,11 +18,14 @@ namespace BLL
                 patientEntity.ModifiedDate = DateTime.Now;
 
                 if (patientValidateDAL.IsAddExactDuplicate(patientEntity))
+                {
                     return new ResultEntity { IsValid = false, Message = ResultUtil.ExactDuplicate };
+                }
 
                 if (patientValidateDAL.IsAddDrugDuplicate(patientEntity))
+                {
                     return new ResultEntity { IsValid = false, Message = ResultUtil.DrugDuplicate };
-
+                }
                 return new ResultEntity { IsValid = true, Message = ResultUtil.NoDuplicateFound };
             }
             catch (Exception ex)
@@ -37,11 +40,13 @@ namespace BLL
                 patientEntity.ModifiedDate = DateTime.Now;
 
                 if (patientValidateDAL.IsUpdateExactDuplicate(patientEntity))
+                {
                     return new ResultEntity { IsValid = false, Message = ResultUtil.ExactDuplicate };
-
+                }
                 if (patientValidateDAL.IsUpdateDrugDuplicate(patientEntity))
+                {
                     return new ResultEntity { IsValid = false, Message = ResultUtil.UpdateDrugDuplicate };
-
+                }                  
                 return new ResultEntity { IsValid = true, Message = ResultUtil.NoDuplicateFound };
             }
             catch (Exception ex)

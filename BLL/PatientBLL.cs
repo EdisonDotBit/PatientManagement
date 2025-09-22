@@ -23,6 +23,18 @@ namespace BLL
                 return new List<PatientEntity>();
             }
         }
+        public List<PatientEntity> SearchPatients(string date, string dosage, string drug, string patient)
+        {
+            try
+            {
+                return patientDAL.SearchPatients(date, dosage, drug, patient);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ResultUtil.GetError(ex.Message));
+                return new List<PatientEntity>();
+            }
+        }
         public ResultEntity CreatePatient(PatientEntity patientEntity)
         {
             try
