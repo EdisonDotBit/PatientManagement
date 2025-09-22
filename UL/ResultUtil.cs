@@ -22,7 +22,6 @@ namespace UL
         public static string DrugDuplicate => "Cannot add same drug to a patient on the same day.";
         public static string UpdateDrugDuplicate => "Cannot update to the same drug for this patient on the same day.";
 
-
         // Exception messages
         public static string DeleteError(string ex) => $"Error deleting record: {ex}";
         public static string DuplicateError(string ex) => $"Error checking duplicate: {ex}";
