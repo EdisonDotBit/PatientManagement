@@ -1,6 +1,6 @@
 ﻿var table;
 
-// Parse MVC JSON date
+// Parse MVC JSON date for display
 function parseMvcDate(dateStr) {
     if (!dateStr) return '';
     var timestamp = dateStr.match(/\d+/);
@@ -11,23 +11,6 @@ function parseMvcDate(dateStr) {
         date.getFullYear();
 }
 
-// Refresh table
-function refreshTable(data) {
-    table.clear();
-    $.each(data, function (i, item) {
-        table.row.add([
-            parseMvcDate(item.ModifiedDate),
-            parseFloat(item.Dosage).toFixed(2),
-            item.Drug,
-            item.Patient,
-            '<a href="/Patient/Edit/' + item.ID + '" class="btn btn-sm btn-warning" title="Edit Record">Edit</a> ' +
-            '<button type="button" data-id="' + item.ID + '" class="btn btn-sm btn-danger btn-delete" title="Delete Record">Delete</button>'
-        ]);
-    });
-    table.draw();
-    $('[title]').tooltip({ trigger: 'hover' });
-}
-
 $(document).ready(function () {
     // Initialize DataTable
     table = $('#patientTable').DataTable({
@@ -35,9 +18,18 @@ $(document).ready(function () {
         info: true,
         searching: false,
         ordering: true,
-        order: [[0, 'desc']],
+        order: [[0, 'desc']],  
         columnDefs: [
-            { orderable: false, targets: 4 },
+            {
+                targets: 0, // Date column
+                render: function (data, type, row) {
+                    if (type === 'display') {
+                        return parseMvcDate(data); // Show formatted date
+                    }
+                    return data; // Raw date for sorting
+                }
+            },
+            { orderable: false, targets: 4 }, // Action buttons column
             { className: "text-center align-middle", targets: "_all" }
         ],
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -58,3 +50,20 @@ $(document).ready(function () {
         $(this).addClass('table-active');
     });
 });
+
+// Refresh table with new data
+function refreshTable(data) {
+    table.clear();
+    $.each(data, function (i, item) {
+        table.row.add([
+            item.ModifiedDate,       
+            parseFloat(item.Dosage).toFixed(2),
+            item.Drug,
+            item.Patient,
+            '<a href="/Patient/Edit/' + item.ID + '" class="btn btn-sm btn-warning" title="Edit Record">Edit</a> ' +
+            '<button type="button" data-id="' + item.ID + '" class="btn btn-sm btn-danger btn-delete" title="Delete Record">Delete</button>'
+        ]);
+    });
+    table.draw();
+    $('[title]').tooltip({ trigger: 'hover' });
+}

@@ -19,20 +19,15 @@
                     data: { ID: id },
                     success: function (response) {
                         if (response.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Deleted!',
-                                text: response.message,
-                                timer: 1500,
-                                showConfirmButton: false
-                            }).then(() => {
-                                window.location.reload();
-                            });
+                            Utils.Notification.showToast(response.message, 'success');
+                            setTimeout(() => { window.location.reload(); }, 1500);
                         } else {
-                            Swal.fire('Error', response.message, 'error');
+                            Utils.Notification.showToast(response.message, 'error');
                         }
                     },
-                    error: function () { Swal.fire('Error', 'Error deleting record.', 'error'); }
+                    error: function () {
+                        Utils.Notification.showToast('Error deleting record.', 'error');
+                    }
                 });
             }
         });

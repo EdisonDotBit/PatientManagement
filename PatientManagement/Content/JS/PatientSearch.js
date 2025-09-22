@@ -1,12 +1,16 @@
 ﻿$(document).ready(function () {
+    // Apply real-time formatting for search Dosage input
+    Utils.Validation.formatDosageInput('#filterDosage');
+
     // SEARCH
     $('#btnSearch').click(function () {
         var filters = {
             Date: $('#filterDate').val(),
-            Dosage: $('#filterDosage').val(),
-            Drug: $('#filterDrug').val(),
-            Patient: $('#filterPatient').val()
+            Dosage: Utils.Validation.formatDosageString($('#filterDosage').val()),
+            Drug: $('#filterDrug').val().trim(),
+            Patient: $('#filterPatient').val().trim()
         };
+
         $.ajax({
             url: '/Patient/Search',
             type: 'GET',
