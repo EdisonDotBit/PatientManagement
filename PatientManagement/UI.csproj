@@ -150,7 +150,6 @@
     <Content Include="Content\Images\logo.png" />
     <Content Include="Content\JS\DashboardChart.js" />
     <Content Include="Content\JS\PatientDelete.js" />
-    <Content Include="Content\JS\PatientSearch.js" />
     <Content Include="Content\JS\Shared\Utils.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -188,11 +187,11 @@
     <Content Include="Views\Home\RouteNotFound.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Patient\Create.cshtml" />
-    <Content Include="Views\Patient\Edit.cshtml" />
     <Content Include="Views\Patient\Index.cshtml" />
     <Content Include="Views\Patient\Partial\_PatientForm.cshtml" />
     <Content Include="Views\Shared\MainLayout.cshtml" />
     <Content Include="Views\About\Index.cshtml" />
+    <Content Include="Views\Patient\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
