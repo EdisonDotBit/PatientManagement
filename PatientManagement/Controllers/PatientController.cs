@@ -20,13 +20,6 @@ namespace PatientManagement.Controllers
             return View(patientList);
         }
 
-        [HttpGet]
-        public JsonResult Search(string Date, string Dosage, string Drug, string Patient)
-        {
-            var patients = patientBLL.SearchPatients(Date, Dosage, Drug, Patient);
-            return Json(patients, JsonRequestBehavior.AllowGet);
-        }
-
         public ActionResult Create()
         {
             return View(new PatientEntity());
