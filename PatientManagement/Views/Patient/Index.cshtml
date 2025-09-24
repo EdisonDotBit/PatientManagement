@@ -8,50 +8,48 @@
 <div class="container mt-4">
     <h2 class="mb-3">Patient Details</h2>
 
-    <a href="@Url.Action("Create", "Patient")" class="btn btn-primary mb-3">Add New Record</a>
-
-    <!-- Search Filters -->
-    <div class="card mb-3 p-3">
-        <div class="row g-2 mb-2">
-            <div class="col-md-3">
-                <input type="text" id="filterDate" class="form-control" placeholder="MM/DD/YYYY" />
-            </div>
-            <div class="col-md-3">
-                <input type="text" id="filterDosage" class="form-control" placeholder="Dosage" />
-            </div>
-            <div class="col-md-3">
-                <input type="text" id="filterDrug" class="form-control" placeholder="Drug" />
-            </div>
-            <div class="col-md-3">
-                <input type="text" id="filterPatient" class="form-control" placeholder="Patient" />
-            </div>
-        </div>
-        <div class="mt-2">
-            <button id="btnReset" class="btn btn-secondary">Reset</button>
-        </div>
+    <div class="mb-3">
+        <a href="@Url.Action("Create", "Patient")" class="btn btn-primary">
+            Create New Records
+        </a>
     </div>
 
-    <table class="table table-bordered table-striped text-center align-middle" id="patientTable">
+    <table class="table align-middle" id="patientTable">
         <thead>
+            <!-- Search row -->
             <tr>
+                <th class="text-center">Search By</th>
+                <th><input type="text" id="filterDate" class="form-control form-control-sm" placeholder="Date" /></th>
+                <th><input type="text" id="filterDosage" class="form-control form-control-sm" placeholder="Dosage" /></th>
+                <th><input type="text" id="filterDrug" class="form-control form-control-sm" placeholder="Drug" /></th>
+                <th>
+                    <div class="d-flex">
+                        <input type="text" id="filterPatient" class="form-control form-control-sm me-2" placeholder="Patient" />
+                        <button id="btnReset" class="btn btn-sm btn-secondary">Reset</button>
+                    </div>
+                </th>
+            </tr>
+
+            <!-- Header row -->
+            <tr>
+                <th class="text-center"></th>
                 <th>Date</th>
                 <th>Dosage</th>
                 <th>Drug</th>
                 <th>Patient</th>
-                <th>Actions</th>
             </tr>
         </thead>
         <tbody></tbody>
     </table>
 </div>
 
-@section Scripts{
+@section Scripts {
     <script src="https://cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
     <script src="~/Content/JS/Shared/Utils.js"></script>
-    <script src="~/Content/JS/PatientDelete.js"></script>
-
     <script>
         let allPatients = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
     </script>
     <script src="~/Content/JS/PatientList.js"></script>
+    <script src="~/Content/JS/PatientSearch.js"></script>
+    <script src="~/Content/JS/PatientDelete.js"></script>
 }

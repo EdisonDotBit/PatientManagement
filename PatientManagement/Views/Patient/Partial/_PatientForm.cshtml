@@ -4,38 +4,42 @@
 @Html.HiddenFor(m => m.ID)
 
 <div class="form-group">
-    @Html.LabelFor(m => m.Patient)
-    @Html.TextBoxFor(m => m.Patient, new
+    @Html.LabelFor(m => m.Dosage)
+    <span class="text-danger">*</span>
+    @Html.TextBoxFor(m => m.Dosage, new
     {
         @class = "form-control",
-        placeholder = "Patient Name",
-        title = "Enter the full name of the patients",
+        placeholder = "Dosage",
+        type = "text",
         autofocus = "autofocus",
-        required = "required"  
+        title = "Enter the dosage",
+        required = "required",
+        @Value = (Model.Dosage == 0 ? "" : Model.Dosage.ToString())
     })
     <div class="error-placeholder small"></div>
 </div>
 
 <div class="form-group">
     @Html.LabelFor(m => m.Drug)
+    <span class="text-danger">*</span>
     @Html.TextBoxFor(m => m.Drug, new
     {
         @class = "form-control",
         placeholder = "Drug Name",
         title = "Enter the drug name",
-        required = "required"  
+        required = "required"
     })
     <div class="error-placeholder small"></div>
 </div>
 
 <div class="form-group">
-    @Html.LabelFor(m => m.Dosage)
-    @Html.TextBoxFor(m => m.Dosage, new
+    @Html.LabelFor(m => m.Patient)
+    <span class="text-danger">*</span>
+    @Html.TextBoxFor(m => m.Patient, new
     {
         @class = "form-control",
-        placeholder = "Dosage",
-        type = "text",
-        title = "Enter the dosage",
+        placeholder = "Patient Name",
+        title = "Enter the full name of the patients",
         required = "required"
     })
     <div class="error-placeholder small"></div>
