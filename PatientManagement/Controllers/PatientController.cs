@@ -13,7 +13,6 @@ namespace PatientManagement.Controllers
         // Initialize object to use call BLL methods in the controller
         PatientBLL patientBLL = new PatientBLL();
         PatientValidateBLL patientValidateBLL = new PatientValidateBLL();
-        // GET: Patient
         public ActionResult Index()
         {
             List<PatientEntity> patientList = patientBLL.GetPatients();
