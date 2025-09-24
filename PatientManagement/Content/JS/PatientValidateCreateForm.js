@@ -67,9 +67,9 @@
 
                 // Step 2: Confirm save
                 Swal.fire({
-                    title: 'Are you sure?',
-                    text: "Do you want to save this patient record?",
-                    icon: 'question',
+                    title: 'Add Record',
+                    text: 'Are you sure you want to add this record?',
+                    icon: 'question',   
                     showCancelButton: true,
                     confirmButtonText: 'Yes, Save',
                     cancelButtonText: 'Cancel'

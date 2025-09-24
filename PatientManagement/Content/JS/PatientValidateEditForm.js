@@ -78,8 +78,8 @@
 
                         // Step 3: Confirm update
                         Swal.fire({
-                            title: 'Are you sure?',
-                            text: "Do you want to update this patient record?",
+                            title: 'Update Record',
+                            text: 'Are you sure you want to update this record?',
                             icon: 'question',
                             showCancelButton: true,
                             confirmButtonText: 'Yes, Update',
