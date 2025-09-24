@@ -26,7 +26,7 @@
 
         <!-- Sidebar -->
         <nav class="d-flex flex-column flex-shrink-0 p-3 bg-primary text-white" style="width: 220px;">
-            <a href="@Url.Action("Index", "Home")" class="d-flex align-items-center mb-3 text-white text-decoration-none">
+            <a href="@Url.Action("Index", "Patient")" class="d-flex align-items-center mb-3 text-white text-decoration-none">
                 <img src="~/Content/Images/logo.png" alt="Logo" style="width: 50px; height: auto; margin-right: 8px;" />
                 <span class="fs-5 fw-bold">Patient Management</span>
             </a>
@@ -35,25 +35,12 @@
 
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item mb-1">
-                    <a href="@Url.Action("Index", "Home")"
-                       class="nav-link rounded @(currentController == "Home" && currentAction == "Index" ? "bg-light text-dark fw-bold" : "text-white")">
-                        Dashboard
-                    </a>
-                </li>
-                <li class="nav-item mb-1">
                     <a href="@Url.Action("Index", "Patient")"
                        class="nav-link rounded @(currentController == "Patient" ? "bg-light text-dark fw-bold" : "text-white")">
                         Patients
                     </a>
                 </li>
             </ul>
-
-            <div class="mt-auto pt-3 border-top text-center">
-                <a href="@Url.Action("Index", "About")"
-                   class="nav-link rounded @(currentController == "About" ? "bg-light text-dark fw-bold" : "text-white")">
-                    About Us
-                </a>
-            </div>
         </nav>
 
         <!-- Main content + footer -->
