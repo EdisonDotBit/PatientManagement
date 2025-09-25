@@ -62,7 +62,7 @@ namespace PatientManagement.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult CheckHasChanges(PatientEntity patientEntity)
         {
-            var result = patientValidateBLL.HasChanges(patientEntity);
+            ResultEntity result = patientValidateBLL.HasChanges(patientEntity);
             return Json(new { success = result.Success, message = result.Message });
         }
 
