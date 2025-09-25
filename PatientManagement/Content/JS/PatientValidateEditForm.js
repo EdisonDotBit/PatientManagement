@@ -10,7 +10,7 @@
     });
 
     // Format dosage input
-    Utils.Validation.formatDosageInput('#Dosage');
+    Utils.Validation.formatDosageInput('#txtDosage');
 
     // Initialize form validation
     form.validate({
@@ -52,7 +52,9 @@
         }
 
         // Stop update if form is invalid
-        if (!form.valid()) return;
+        if (!form.valid()) {
+            return;
+        }
 
         // Step 1: Check if there are changes
         $.ajax({
@@ -126,6 +128,6 @@
         form.validate().resetForm();
         form.find(".is-invalid").removeClass("is-invalid");
         form.find(".error-placeholder").html("");
-        $("#Patient").focus();
+        $("#txtDosage").focus();
     });
 });

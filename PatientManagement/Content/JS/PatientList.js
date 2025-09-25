@@ -1,16 +1,22 @@
 ﻿let table;
-
 function formatDate(date) {
-    if (!date) return '';
+    if (!date) {
+        return '';
+    }
     return ("0" + (date.getMonth() + 1)).slice(-2) + '/' +
         ("0" + date.getDate()).slice(-2) + '/' +
         date.getFullYear();
 }
-
 function parseDate(dateStr) {
-    if (!dateStr) return null;
+    if (!dateStr) {
+        return null;
+    }
     let date = new Date(dateStr);
-    return isNaN(date) ? null : date;
+    if (isNaN(date)) {
+        return null;
+    } else {
+        return date;
+    }
 }
 
 $(document).ready(function () {
@@ -38,8 +44,11 @@ $(document).ready(function () {
                 data: "ModifiedDate",
                 className: "text-start",
                 render: function (data, type) {
-                    if (type === "display") return formatDate(parseDate(data));
-                    return new Date(data);
+                    if (type === "display") {
+                        return formatDate(parseDate(data));
+                    } else {
+                        return new Date(data);
+                    }
                 }
             },
             { data: "Dosage", className: "text-start", render: d => parseFloat(d).toFixed(2) },
@@ -50,12 +59,15 @@ $(document).ready(function () {
 
     // Row highlighting
     $('#patientTable tbody').on('click', 'tr', function (e) {
-        if ($(e.target).closest('a, button').length > 0) return;
-        $('#patientTable tbody tr').removeClass('table-active');
-        $(this).addClass('table-active');
+        if ($(e.target).closest('a, button').length > 0) {
+            return;
+        } else {
+            $('#patientTable tbody tr').removeClass('table-active');
+            $(this).addClass('table-active');
+        }
     });
 
     // Input formatting
-    Utils.Validation.formatDosageInput('#filterDosage');
-    Utils.Validation.formatDateInput('#filterDate');
+    Utils.Validation.formatDosageInput('#txtDosage');
+    Utils.Validation.formatDateInput('#txtDate');
 });
