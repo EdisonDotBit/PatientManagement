@@ -14,6 +14,7 @@
         autofocus = "autofocus",
         title = "Enter the dosage",
         required = "required",
+        id = "txtDosage",
         @Value = (Model.Dosage == 0 ? "" : Model.Dosage.ToString())
     })
     <div class="error-placeholder small"></div>
@@ -27,7 +28,8 @@
         @class = "form-control",
         placeholder = "Drug Name",
         title = "Enter the drug name",
-        required = "required"
+        required = "required",
+        id = "txtDrug"
     })
     <div class="error-placeholder small"></div>
 </div>
@@ -40,8 +42,8 @@
         @class = "form-control",
         placeholder = "Patient Name",
         title = "Enter the full name of the patients",
-        required = "required"
+        required = "required",
+        id = "txtPatient"
     })
     <div class="error-placeholder small"></div>
 </div>
-
