@@ -1,8 +1,9 @@
 ﻿using DAL;
 using EL;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using UL;
 
 namespace BLL
@@ -19,12 +20,22 @@ namespace BLL
 
                 if (patientValidateDAL.IsAddExactDuplicate(patientEntity))
                 {
-                    return new ResultEntity { IsValid = false, Message = ResultUtil.ExactDuplicate };
+                    return new ResultEntity 
+                    { 
+                        IsValid = false, 
+                        Message = ResultUtil.ExactDuplicate,
+                        Fields = new List<string> { "Patient", "Drug", "Dosage" }
+                    };
                 }
 
                 if (patientValidateDAL.IsAddDrugDuplicate(patientEntity))
                 {
-                    return new ResultEntity { IsValid = false, Message = ResultUtil.DrugDuplicate };
+                    return new ResultEntity 
+                    { 
+                        IsValid = false, 
+                        Message = ResultUtil.DrugDuplicate,
+                        Fields = new List<string> { "Drug" }
+                    };
                 }
                 return new ResultEntity { IsValid = true, Message = ResultUtil.NoDuplicateFound };
             }
@@ -41,11 +52,21 @@ namespace BLL
 
                 if (patientValidateDAL.IsUpdateExactDuplicate(patientEntity))
                 {
-                    return new ResultEntity { IsValid = false, Message = ResultUtil.ExactDuplicate };
+                    return new ResultEntity 
+                    { 
+                        IsValid = false, 
+                        Message = ResultUtil.ExactDuplicate,
+                        Fields = new List<string> { "Patient", "Drug", "Dosage" }
+                    };
                 }
                 if (patientValidateDAL.IsUpdateDrugDuplicate(patientEntity))
                 {
-                    return new ResultEntity { IsValid = false, Message = ResultUtil.UpdateDrugDuplicate };
+                    return new ResultEntity 
+                    { 
+                        IsValid = false, 
+                        Message = ResultUtil.DrugDuplicate,
+                        Fields = new List<string> { "Drug" }
+                    };
                 }                  
                 return new ResultEntity { IsValid = true, Message = ResultUtil.NoDuplicateFound };
             }
