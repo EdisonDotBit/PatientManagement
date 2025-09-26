@@ -29,7 +29,7 @@ namespace PatientManagement.Controllers
         public JsonResult CheckDuplicate(PatientEntity patientEntity)
         {
             ResultEntity result = patientValidateBLL.IsAddDuplicate(patientEntity);
-            return Json(new { isDuplicate = !result.IsValid, message = result.Message });
+            return Json(new { isDuplicate = !result.IsValid, message = result.Message, fields = result.Fields});
         }
 
         [HttpPost]
@@ -71,7 +71,7 @@ namespace PatientManagement.Controllers
         public JsonResult CheckUpdateDuplicate(PatientEntity patientEntity)
         {
             ResultEntity result = patientValidateBLL.IsUpdateDuplicate(patientEntity);
-            return Json(new { isDuplicate = !result.IsValid, message = result.Message });
+            return Json(new { isDuplicate = !result.IsValid, message = result.Message, fields = result.Fields });
         }
 
         [HttpPost]
