@@ -19,8 +19,7 @@ namespace UL
         public static string NotFound => "Record not found.";
         public static string NoChanges => "No changes detected.";   
         public static string ExactDuplicate => "Record already exists.";
-        public static string DrugDuplicate => "Cannot add same drug to a patient on the same day.";
-        public static string UpdateDrugDuplicate => "Cannot update to the same drug for this patient on the same day.";
+        public static string DrugDuplicate => "Cannot add same drug to a patient";
 
         // Exception messages
         public static string DeleteError(string ex) => $"Error deleting record: {ex}";
