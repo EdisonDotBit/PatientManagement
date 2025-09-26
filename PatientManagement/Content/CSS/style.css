@@ -7,15 +7,12 @@
 /* --- Patient Table Styling --- */
 #patientTable {
     border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
 }
 
 #patientTable thead th {
-    text-align: left !important;
     vertical-align: middle;
-}
-
-#patientTable thead th:first-child {
-    text-align: center !important;
 }
 
 /* Row interactions */
@@ -23,24 +20,7 @@
     cursor: pointer;
 }
 
-#patientTable tbody tr.table-active,
-#patientTable tbody tr.table-active td {
-    background-color: rgb(153, 201, 255) !important;
-    color: #000 !important;
-}
-
-#patientTable tbody tr:hover {
-    background-color: inherit !important;
-    cursor: pointer;
-}
-
-/* --- Dashboard charts --- */
-.chart-container {
-    position: relative;
-    width: 100%;
-    height: 300px;
-}
-
-.dashboard-card {
-    height: 350px;
+/* Button container width */
+.btn-container {
+    width: 75px;
 }
