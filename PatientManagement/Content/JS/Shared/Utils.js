@@ -12,12 +12,12 @@ Utils.Validation = {
             Patient: {
                 required: "Patient name is required.",
                 maxlength: "Max 50 characters.",
-                alphaName: "Accepts letters, spaces, hyphen, apostrophe only."
+                alphaName: "Must contain letters and may include spaces, hyphens (-), or apostrophes (') only."
             },
             Drug: {
                 required: "Drug name is required.",
                 maxlength: "Max 50 characters.",
-                alphanumericName: "Accepts letters, numbers, and spaces only."
+                alphanumericName: "Must contain letters and may include numbers and spaces only."
             },
             Dosage: {
                 required: "Dosage is required.",
@@ -32,15 +32,15 @@ Utils.Validation = {
     // Validate Custom Rules
     addCustomMethods: function () {
         $.validator.addMethod("alphaName", function (value, element) {
-            return this.optional(element) || /^[A-Za-z\s'-]+$/.test(value);
-        }, "Accepts letters, spaces, hyphen, apostrophe only.");
+            return this.optional(element) || /^(?=.*[A-Za-z])[A-Za-z\s'-]+$/.test(value);
+        }, "Must contain letters and may include spaces, hyphens (-), or apostrophes (') only.");
 
         $.validator.addMethod("alphanumericName", function (value, element) {
-            return this.optional(element) || /^[A-Za-z0-9\s]+$/.test(value);
-        }, "Accepts letters, numbers, and spaces only.");
+            return this.optional(element) || (/^(?=.*[A-Za-z])[A-Za-z0-9\s]+$/.test(value));
+        }, "Must contain letters and may include numbers and spaces only.");
 
         $.validator.addMethod("decimal4", function (value, element) {
-            return this.optional(element) || /^\d+(\.\d{1,4})?$/.test(value);
+            return this.optional(element) || /^(\d+)?(\.\d{1,4})?$/.test(value);
         }, "Up to 4 decimal places only.");
     },
 
@@ -108,7 +108,7 @@ Utils.Validation = {
     normalizeTextInput: function (el) {
         var cleanVal = $(el).val().replace(/\s+/g, " ").trim();
         $(el).val(cleanVal);
-    }
+    },
 };
 
 // Notification Utilities
@@ -136,5 +136,15 @@ Utils.Notification = {
                 toast.addEventListener('mouseleave', Swal.resumeTimer);
             }
         });
+    },
+
+     showDuplicateErrors: function (form, fields) {
+        const errors = {};
+        fields.forEach(function (field) {
+            errors[field] = "Duplicate value";
+            const $field = form.find(`[name="${field}"]`);
+            $field.addClass("is-invalid ajax-duplicate-error");
+        });
+        form.validate().showErrors(errors);
     }
 };
