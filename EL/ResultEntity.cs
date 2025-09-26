@@ -11,6 +11,6 @@ namespace EL
         public bool Success { get; set; } // true if operation ran without errors
         public bool IsValid { get; set; } // true if validation passed (no duplicate)
         public string Message { get; set; }
-        
+        public List<string> Fields { get; set; } = new List<string>();
     }
 }
