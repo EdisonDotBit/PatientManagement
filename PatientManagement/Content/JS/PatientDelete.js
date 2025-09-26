@@ -1,10 +1,10 @@
 ﻿$(document).ready(function () {
-    // DELETE with confirmation
+    // Delete with confirmation
     $(document).on('click', '.btn-delete', function () {
         var id = $(this).data('id');
         Swal.fire({
-            title: 'Are you sure?',
-            text: "Do you want to delete this record?",
+            title: 'Delete Record',
+            text: "Are you sure you want to delete this record?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
