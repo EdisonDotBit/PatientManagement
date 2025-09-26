@@ -18,12 +18,11 @@ namespace BLL
                 return patientDAL.GetPatients();
             }  
             catch (Exception ex)
-            {
+            {   
                 Console.WriteLine(ResultUtil.GetError(ex.Message));
                 return new List<PatientEntity>();
             }
         }
-      
         public ResultEntity CreatePatient(PatientEntity patientEntity)
         {
             try
