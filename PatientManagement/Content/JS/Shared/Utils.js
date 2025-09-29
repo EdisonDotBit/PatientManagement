@@ -12,19 +12,19 @@ Utils.Validation = {
             Patient: {
                 required: "Patient name is required.",
                 maxlength: "Max 50 characters.",
-                alphaName: "Must contain letters and may include spaces, hyphens (-), or apostrophes (') only."
+                alphaName: "Patient name must contain letters and may include spaces, hyphens (-), or apostrophes (') only."
             },
             Drug: {
                 required: "Drug name is required.",
                 maxlength: "Max 50 characters.",
-                alphanumericName: "Must contain letters and may include numbers and spaces only."
+                alphanumericName: "Drug name must contain letters and may include numbers and spaces only."
             },
             Dosage: {
                 required: "Dosage is required.",
                 number: "Enter a valid number.",
                 min: "Must be greater than 0.",
                 max: "Must not exceed 999.9999.",
-                decimal4: "Up to 4 decimal places only."
+                decimal4: "Dusage must be up to 4 decimal places only."
             }
         }
     },
@@ -33,15 +33,15 @@ Utils.Validation = {
     addCustomMethods: function () {
         $.validator.addMethod("alphaName", function (value, element) {
             return this.optional(element) || /^(?=.*[A-Za-z])[A-Za-z\s'-]+$/.test(value);
-        }, "Must contain letters and may include spaces, hyphens (-), or apostrophes (') only.");
+        }, "Patient name must contain letters and may include spaces, hyphens (-), or apostrophes (') only.");
 
         $.validator.addMethod("alphanumericName", function (value, element) {
             return this.optional(element) || (/^(?=.*[A-Za-z])[A-Za-z0-9\s]+$/.test(value));
-        }, "Must contain letters and may include numbers and spaces only.");
+        }, "Drug name must contain letters and may include numbers and spaces only.");
 
         $.validator.addMethod("decimal4", function (value, element) {
             return this.optional(element) || /^(\d+)?(\.\d{1,4})?$/.test(value);
-        }, "Up to 4 decimal places only.");
+        }, "Dosage must be up to 4 decimal places only.");
     },
 
     // Input Formatting
