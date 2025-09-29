@@ -1,16 +1,14 @@
 ﻿$(document).ready(function () {
-    var form = $("#editForm");
+    const form = $("#editForm");
 
-    // Add custom validation methods
+    // Validation helpers
     Utils.Validation.addCustomMethods();
+    Utils.Validation.formatDosageInput('#txtDosage');
 
     // Collapse spaces on blur
     $('input[type="text"], textarea').on('blur', function () {
         Utils.Validation.normalizeTextInput(this);
     });
-
-    // Format dosage input
-    Utils.Validation.formatDosageInput('#txtDosage');
 
     // Initialize form validation
     form.validate({
@@ -21,42 +19,39 @@
             $(element).addClass("is-invalid");
         },
         unhighlight: function (element) {
-            $(element).removeClass("is-invalid");
+            if ($(element).siblings(".error-placeholder").text().trim() === "") {
+                $(element).removeClass("is-invalid");
+                $(element).removeClass("ajax-duplicate-error");
+            }
         },
         errorPlacement: function (error, element) {
             element.siblings(".error-placeholder").html(error);
+        },
+        onfocusout: function (element) {
+            if (!$(element).hasClass("ajax-duplicate-error")) {
+                this.element(element);
+            }
         }
     });
 
-    // UPDATE Button
+    // Update Button
     $("#btnUpdate").click(function () {
-        // Normalize text inputs before validation
-        form.find('input[type="text"], textarea').each(function () {
-            Utils.Validation.normalizeTextInput(this);
-        });
 
-        // Trigger validation to show inline errors
-        form.valid();
+        // Validate all inputs
+        const isFormValid = form.valid();
 
-        // Check if any required field is empty
-        var hasEmpty = false;
-        form.find(':input[required]').each(function () {
-            if ($(this).val().trim() === "") {
-                hasEmpty = true;
-                return false; // break loop
+        // Check required fields manually
+        const hasEmpty = form.find(":input[required]").toArray()
+            .some(el => $(el).val().trim() === "");
+
+        if (!isFormValid || hasEmpty) {
+            if (hasEmpty) {
+                Utils.Notification.showToast("All field/s are required.", "error");
             }
-        });
-
-        if (hasEmpty) {
-            Utils.Notification.showToast("All field/s are required.", "error");
+            return; 
         }
 
-        // Stop update if form is invalid
-        if (!form.valid()) {
-            return;
-        }
-
-        // Step 1: Check if there are changes
+        // Step 1: Check for changes
         $.ajax({
             url: checkHasChangesUrl,
             type: 'POST',
@@ -67,7 +62,7 @@
                     return;
                 }
 
-                // Step 2: Check for duplicate
+                // Step 2: Check for duplicates
                 $.ajax({
                     url: checkUpdateDuplicateUrl,
                     type: 'POST',
@@ -75,10 +70,11 @@
                     success: function (dupResponse) {
                         if (dupResponse.isDuplicate) {
                             Utils.Notification.showToast(dupResponse.message, 'error');
+                            Utils.Notification.showDuplicateErrors(form, dupResponse.fields);
                             return;
                         }
 
-                        // Step 3: Confirm update
+                        // Step 3: Confirm changes
                         Swal.fire({
                             title: 'Update Record',
                             text: 'Are you sure you want to update this record?',
@@ -88,7 +84,8 @@
                             cancelButtonText: 'Cancel'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                // Step 4: Save update via AJAX
+
+                                // Step 4: Save update
                                 $.ajax({
                                     url: editPatientUrl,
                                     type: 'POST',
@@ -121,13 +118,26 @@
         });
     });
 
+    // Remove AJAX error if user changes input
+    $('input, textarea').on('input', function () {
+        if ($(this).hasClass("ajax-duplicate-error")) {
+            $(this).removeClass("ajax-duplicate-error");
+            $(this).removeClass("is-invalid");
+            $(this).siblings(".error-placeholder").html("");
+        }
+    });
+
     // Clear All Button
     $("#btnClear").click(function () {
-        form.find("input[type=text], input[type=number], textarea").val("");
+        $("#txtDosage").val("");
+        $("#txtDrug").val("");
+        $("#txtPatient").val("");
+
         form.find("select").prop("selectedIndex", 0);
         form.validate().resetForm();
-        form.find(".is-invalid").removeClass("is-invalid");
+        form.find(".is-invalid, .ajax-duplicate-error").removeClass("is-invalid ajax-duplicate-error");
         form.find(".error-placeholder").html("");
+
         $("#txtDosage").focus();
     });
 });
