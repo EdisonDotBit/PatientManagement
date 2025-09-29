@@ -28,7 +28,7 @@ namespace BLL
             try
             {
                 patientEntity.ModifiedDate = DateTime.Now;
-
+               
                 bool created = patientDAL.CreatePatient(patientEntity);
                 
                 if(created)
