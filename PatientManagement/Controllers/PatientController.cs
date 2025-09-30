@@ -53,7 +53,7 @@ namespace PatientManagement.Controllers
             PatientEntity patientEntity = patientBLL.GetPatients().FirstOrDefault(p => p.ID == ID);
             if (patientEntity == null)
             {
-                return RedirectToAction("RouteNotFound", "Home");
+                return RedirectToAction("RouteNotFound", "HttpError");
             }
             return View(patientEntity);
         }
