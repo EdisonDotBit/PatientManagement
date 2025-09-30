@@ -1,75 +1,54 @@
-﻿// Partial match that decides which matching function to use
-function matchPartial(value, filter) {
-    if (!filter) return true; 
-    if (value === null || value === undefined) return false;
-
-    let vStr = value.toString().trim();
-    let fStr = filter.toString().trim();
-
-    if (!isNaN(vStr) && !isNaN(fStr.replace(/\.$/, ""))) {
-        return matchDosage(vStr, fStr); 
-    } else if (fStr.includes("/")) {
-        return matchDate(vStr, fStr); 
-    } else {
-        return matchText(vStr, fStr); 
-    }
-}
-
-// Match a date value against a filter
-function matchDate(value, filter) {
-    if (!value || !filter) return false;
-
-    // Normalize leading zeros
-    let vNorm = value.replace(/\b0(\d)/g, "$1");
-    let fNorm = filter.replace(/\b0(\d)/g, "$1");
-
-    if (vNorm.includes(filter) || vNorm.includes(fNorm)) return true;
-
-    let [mm, dd, yyyy] = value.split("/");
-    if (!mm || !dd || !yyyy) return false;
-
-    if (/^\d{4}$/.test(fNorm)) {
-        return yyyy === fNorm;
-    } else if (/^\d{1,2}\/\d{4}$/.test(fNorm)) { 
-        let [fMonth, fYear] = fNorm.split("/");
-        fMonth = fMonth.padStart(2, "0");
-        return yyyy === fYear && mm === fMonth;
-    } else {
-        return false;
-    }
-}
-
-// Match numeric dosage values (up to 4 decimal places)
-function matchDosage(value, filter) {
-    let vStr = parseFloat(value).toFixed(4); 
-    let fStr = filter.toString().trim();
-    return vStr.includes(fStr);
-}
-
-// Text matching (case-insensitive, spaces ignored)
+﻿// Text matching (case-insensitive, ignores spaces)
 function matchText(value, filter) {
-    let vNorm = value.toLowerCase().replace(/\s+/g, '');
-    let fNorm = filter.toLowerCase().replace(/\s+/g, '');
-    return vNorm.includes(fNorm);
+    if (!filter) return true;
+    if (value === null || value === undefined) return false;
+    const v = value.toString().toLowerCase().replace(/\s+/g, '');
+    const f = filter.toString().toLowerCase().replace(/\s+/g, '');
+    return v.includes(f);
 }
 
-// Main Filtering Function
+// Numeric dosage match
+function matchDosage(value, filter) {
+    if (!filter) return true;
+    const v = parseFloat(value).toFixed(4);
+    return v.includes(filter);
+}
+
+// Date match (convert datepicker yyyy-mm-dd to MM/DD/YYYY)
+function matchDate(value, filter) {
+    if (!filter) return true;
+    if (!value) return false;
+    const [yyyy, mm, dd] = filter.split('-'); // datepicker format
+    const filterFormatted = `${mm}/${dd}/${yyyy}`;
+    return value === filterFormatted;
+}
+
+// Partial match based on type
+function matchPartial(value, filter, type) {
+    if (type === "date") {
+        return matchDate(value, filter);
+    }
+    if (type === "dosage") {
+        return matchDosage(value, filter);
+    }
+    return matchText(value, filter);
+}
+
+// Main filtering function
 function filterPatients() {
-    const dateFilter = $('#txtDate').val().trim();
+    const dateFilter = $('#txtDate').val();
     const dosageFilter = $('#txtDosage').val().trim();
     const drugFilter = $('#txtDrug').val().trim();
     const patientFilter = $('#txtPatient').val().trim();
 
-    // Filter patients array
     const filtered = allPatients.filter(p => {
-        const dateStr = formatDate(parseDate(p.ModifiedDate));
-        return matchPartial(dateStr, dateFilter) &&
-            matchPartial(p.Dosage, dosageFilter) &&
+        const dateStr = formatDate(new Date(p.ModifiedDate)); // MM/DD/YYYY
+        return matchPartial(dateStr, dateFilter, "date") &&
+            matchPartial(p.Dosage, dosageFilter, "dosage") &&
             matchPartial(p.Drug, drugFilter) &&
             matchPartial(p.Patient, patientFilter);
     });
 
-    // Update DataTable
     table.clear().rows.add(filtered).draw();
 
     // Show or hide reset button
@@ -80,20 +59,14 @@ function filterPatients() {
     }
 }
 
-// Event Bindings
+// Event bindings
 $(document).ready(function () {
-    // Bind filters to input events
     $('#txtDate, #txtDosage, #txtDrug, #txtPatient').on('input', filterPatients);
 
-    // Hide reset button initially
-    $('#btnReset').hide();
-
-    // Reset filters
     $('#btnReset').click(function () {
         $('#txtDate, #txtDosage, #txtDrug, #txtPatient').val('');
         filterPatients();
     });
 
-    // Initial filtering on page load
     filterPatients();
 });
