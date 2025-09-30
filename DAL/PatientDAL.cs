@@ -12,7 +12,7 @@ namespace DAL
             List<PatientEntity> patients = new List<PatientEntity>();
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                using(SqlCommand cmd = new SqlCommand("spGetPatients", con))
+                using (SqlCommand cmd = new SqlCommand("spGetPatients", con))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     con.Open();
