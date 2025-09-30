@@ -1,18 +1,18 @@
 ﻿let table;
 
-// Helpers for date formatting
-function formatDate(date) {
-    if (!date) return '';
-    return ("0" + (date.getMonth() + 1)).slice(-2) + '/' +
-        ("0" + date.getDate()).slice(-2) + '/' +
-        date.getFullYear();
-}
-
 // Parse date string into Date object
 function parseDate(dateStr) {
     if (!dateStr) return null;
     let date = new Date(dateStr);
     return isNaN(date) ? null : date;
+}
+
+// Helpers for formatting dates as MM/DD/YYYY
+function formatDate(date) {
+    if (!date) return '';
+    return ("0" + (date.getMonth() + 1)).slice(-2) + '/' +
+        ("0" + date.getDate()).slice(-2) + '/' +
+        date.getFullYear();
 }
 
 $(document).ready(function () {
@@ -28,7 +28,6 @@ $(document).ready(function () {
         autoWidth: false,
         columns: [
             {
-                // Actions column
                 data: null,
                 className: "text-center",
                 width: "150px",
@@ -40,21 +39,21 @@ $(document).ready(function () {
                 }
             },
             {
-                // Date column
                 data: "ModifiedDate",
                 className: "text-start",
                 render: function (data, type) {
-                    return type === "display" ? formatDate(parseDate(data)) : new Date(data);
+                    if (!data) return "";
+                    const d = parseDate(data);
+                    return type === "display" ? formatDate(d) : d;
                 }
             },
             {
-                // Dosage column
                 data: "Dosage",
                 className: "text-start",
                 render: d => parseFloat(d).toFixed(2)
             },
-            { data: "Drug", className: "text-start" },  // Drug column
-            { data: "Patient", className: "text-start" } // Patient column
+            { data: "Drug", className: "text-start" },
+            { data: "Patient", className: "text-start" }
         ]
     });
 
@@ -62,10 +61,12 @@ $(document).ready(function () {
     $('#patientTable tbody').on('click', 'tr', function (e) {
         if ($(e.target).closest('a, button').length > 0) return;
         $('#patientTable tbody tr').removeClass('table-active');
-        $(this).addClass('table-active'); 
+        $(this).addClass('table-active');
     });
 
-    // Input formatting for dosage and date
+    // Dosage formatting
     Utils.Validation.formatDosageInput('#txtDosage');
-    Utils.Validation.formatDateInput('#txtDate');
+
+    // Initial filter
+    filterPatients();
 });
