@@ -82,7 +82,18 @@
                                 Utils.Notification.showToast(saveResponse.message, 'success');
                                 setTimeout(() => window.location.href = indexPatientUrl, 1500);
                             } else {
-                                Utils.Notification.showToast(saveResponse.message, 'error');
+                                if (saveResponse.errors) {
+                                    // Server-side validation errors (dictionary)
+                                    $.each(saveResponse.errors, function (fieldName, messages) {
+                                        const input = $("[name='" + fieldName + "']");
+                                        input.addClass("is-invalid");
+                                        input.siblings(".error-placeholder").html(messages.join("<br/>"));
+                                    });
+                                    Utils.Notification.showToast("Please fix the highlighted errors.", "error");
+                                } else {
+                                    // Generic error
+                                    Utils.Notification.showToast(saveResponse.message, 'error');
+                                }
                             }
                         },
                         error: function () {
