@@ -92,18 +92,31 @@
                                     data: form.serialize(),
                                     success: function (response) {
                                         if (response.success) {
+                                            // Update successful
                                             Utils.Notification.showToast(response.message, 'success');
                                             setTimeout(() => {
                                                 window.location.href = indexPatientUrl;
                                             }, 1500);
                                         } else {
-                                            Utils.Notification.showToast(response.message, 'error');
+                                            if (response.errors) {
+                                                // Server-side validation errors from ModelState dictionary
+                                                $.each(response.errors, function (fieldName, messages) {
+                                                    const input = $("[name='" + fieldName + "']");
+                                                    input.addClass("is-invalid");
+                                                    input.siblings(".error-placeholder").html(messages.join("<br/>"));
+                                                });
+                                                Utils.Notification.showToast("Please fix the highlighted errors.", "error");
+                                            } else {
+                                                // Fallback for non-validation errors
+                                                Utils.Notification.showToast(response.message, 'error');
+                                            }
                                         }
                                     },
                                     error: function () {
                                         Utils.Notification.showToast('An unexpected error occurred.', 'error');
                                     }
                                 });
+
                             }
                         });
                     },
