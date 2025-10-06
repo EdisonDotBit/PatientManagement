@@ -34,15 +34,17 @@ namespace PatientManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult Create(PatientEntity patientEntity)
+        public JsonResult Create(PatientEntity patientEntity)   
         {
             if (!ModelState.IsValid)
             {
-                var errors = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
-                return Json(new { success = false, message = string.Join("<br />", errors) });
+                var errors = ModelState
+                    .Where(kvp => kvp.Value.Errors.Any())
+                    .ToDictionary(
+                        kvp => kvp.Key,
+                        kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                    );
+                return Json(new { success = false, errors });
             }
             ResultEntity result = patientBLL.CreatePatient(patientEntity);
             return Json(new { success = result.Success, message = result.Message});
@@ -80,11 +82,13 @@ namespace PatientManagement.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var errors = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
-                return Json(new { success = false, message = string.Join("<br />", errors) });
+                var errors = ModelState
+                    .Where(kvp => kvp.Value.Errors.Any())
+                    .ToDictionary(
+                        kvp => kvp.Key,
+                        kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                    );
+                return Json(new { success = false, errors });
             }
             ResultEntity result = patientBLL.EditPatient(patientEntity);
             return Json(new { success = result.Success, message = result.Message });
